@@ -1,0 +1,45 @@
+.jumbo {
+    margin: 10px 10px;
+    border-radius: 20px;
+    padding: 70px 30px;
+    background: #9cc8fa;
+    color: #000000;
+    min-height: 100px;
+    box-shadow: 5px 5px #888888;
+    overflow: hidden;
+    transition: all 0.3s ease-out; 
+}
+
+.jumbo:hover {
+  transform: translateY(-5px) scale(1.005) translateZ(0);
+  box-shadow: 0 24px 36px rgba(0,0,0,0.11), 0 24px 46px var(--box-shadow-color);
+}
+
+.jumbo:hover .overlay {
+  transform: scale(4) translateZ(0);
+}
+
+.example-card { 
+    max-width: 359px;
+    display: block;
+    margin: 10px 10px;
+    background-color: rgb(85, 241, 226);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease-out; 
+  }
+  
+  .example-card:hover {
+    transform: translateY(-5px) scale(1.06) translateZ(0);
+    box-shadow: 0 24px 36px rgba(0,0,0,0.11), 0 24px 46px var(--box-shadow-color);
+  }
+  
+  .example-card:hover .overlay {
+    transform: scale(4) translateZ(0);
+  }
+
+.button {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border-radius: 15px;
+}
