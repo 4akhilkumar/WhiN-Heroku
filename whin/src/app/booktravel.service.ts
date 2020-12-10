@@ -10,10 +10,10 @@ export class BooktravelService {
     private _router: Router) { }
     booktravel(linkbtravel){
       console.log(linkbtravel)
-      return this.http.post("https://whin-heroku.herokuapp.com/booktravel/booktravel",linkbtravel)
+      return this.http.post("https://whintth.herokuapp.com/booktravel/booktravel",linkbtravel)
     }
 
     getbooking(id){
-      return this.http.get(`https://whin-heroku.herokuapp.com/booktravel/getbooktravels/${id}`)
+      return this.http.get(`https://whintth.herokuapp.com/booktravel/getbooktravels/${id}`)
     }
 }

@@ -7,8 +7,8 @@ import { Router } from '@angular/router'
 })
 export class AuthService {
 
-  private _registerUrl = "https://whin-heroku.herokuapp.com/user/register";
-  private _loginUrl = "https://whin-heroku.herokuapp.com/user/login";
+  private _registerUrl = "https://whintth.herokuapp.com/user/register";
+  private _loginUrl = "https://whintth.herokuapp.com/user/login";
 
   constructor(private http: HttpClient,
     private _router: Router) { }
@@ -35,28 +35,28 @@ export class AuthService {
     }
 
     getUserId(){
-      return this.http.get("https://whin-heroku.herokuapp.com/user/userid",{
+      return this.http.get("https://whintth.herokuapp.com/user/userid",{
         params:new HttpParams().append('token',localStorage.getItem('token'))
       })
     }
 
     getUserName(id){
-      return this.http.get(`https://whin-heroku.herokuapp.com/user/username/${id}`)
+      return this.http.get(`https://whintth.herokuapp.com/user/username/${id}`)
     }
 
     getName(id){
-      return this.http.get(`https://whin-heroku.herokuapp.com/user/name/${id}`)
+      return this.http.get(`https://whintth.herokuapp.com/user/name/${id}`)
     }
 
     getProfile(id){
-      return this.http.get<any>(`https://whin-heroku.herokuapp.com/user/profile/${id}`)
+      return this.http.get<any>(`https://whintth.herokuapp.com/user/profile/${id}`)
     }
 
     editProfile(id,user){
-      return this.http.patch<any>(`https://whin-heroku.herokuapp.com/user/edit-profile/${id}`,user);
+      return this.http.patch<any>(`https://whintth.herokuapp.com/user/edit-profile/${id}`,user);
     }
 
     deleteaccount(id){
-      return this.http.delete<any>(`https://whin-heroku.herokuapp.com/user/delete/${id}`)
+      return this.http.delete<any>(`https://whintth.herokuapp.com/user/delete/${id}`)
     }
 }

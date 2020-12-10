@@ -10,6 +10,6 @@ export class ContactusService {
   constructor(private http: HttpClient,
     private _router: Router) { }
     contactus(link3){
-      return this.http.post("https://whin-heroku.herokuapp.com/contactus/contactus",link3)
+      return this.http.post("https://whintth.herokuapp.com/contactus/contactus",link3)
     }
 }
