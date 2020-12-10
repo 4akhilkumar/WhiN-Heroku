@@ -10,9 +10,9 @@ export class BookhospitalityService {
     private _router: Router) { }
     bookhospitality(linkbhos){
       console.log(linkbhos)
-      return this.http.post("http://localhost:3000/bookhospitality/bookhospitality",linkbhos)
+      return this.http.post("https://whin-heroku.herokuapp.com/bookhospitality/bookhospitality",linkbhos)
     }
     getbooking(id){
-      return this.http.get(`http://localhost:3000/bookhospitality/getbookhospitalitys/${id}`)
+      return this.http.get(`https://whin-heroku.herokuapp.com/bookhospitality/getbookhospitalitys/${id}`)
     }
 }

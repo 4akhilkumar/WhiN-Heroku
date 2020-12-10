@@ -9,9 +9,9 @@ export class DonateService {
   constructor(private http: HttpClient,
   private _router: Router) { }
     donate(link2){
-      return this.http.post("http://localhost:3000/donate/donate",link2)
+      return this.http.post("https://whin-heroku.herokuapp.com/donate/donate",link2)
     }
     getdonate(id){
-      return this.http.get(`http://localhost:3000/donate/getdonates/${id}`)
+      return this.http.get(`https://whin-heroku.herokuapp.com/donate/getdonates/${id}`)
     }
 }
