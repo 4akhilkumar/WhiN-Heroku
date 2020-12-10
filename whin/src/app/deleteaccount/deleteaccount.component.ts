@@ -17,13 +17,14 @@ export class DeleteaccountComponent implements OnInit {
 
   ngOnInit() {
       this.form = this.formBuilder.group({
-          acceptTerms: [false, Validators.requiredTrue]
+          acceptTerms: [false, Validators.requiredTrue],
+          acceptTerms2: [false, Validators.requiredTrue]
       });
   }
 
   get f() { return this.form.controls; }
 
-  onSubmit() {
+  onSubmit() { 
       this.submitted = true;
 
       if (this.form.invalid) {
