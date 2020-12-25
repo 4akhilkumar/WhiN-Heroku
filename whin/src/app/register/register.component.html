@@ -4,7 +4,7 @@
       <span class="material-icons">connect_without_contact</span>
       Hey there! Thank you for choosing WhiN. We don't ask your personal information anytime. <br>It's quite simple to register in WhiN. Along with your Good Name, Just Enter your E - Mail and a Strong Password. And surf with WhiN Service and Features...
     </h1>
-    <mat-divider></mat-divider>
+    <mat-divider></mat-divider> 
     <br>
     <h2 style="font-size: large;">
       <span class="material-icons">warning</span>
@@ -54,6 +54,9 @@
               </button>
               <mat-error *ngIf="registerData.password.invalid">{{getError()}}</mat-error>
             </mat-form-field>
+          </div>
+          <div>
+            <re-captcha (resolved)="resolved($event)" siteKey="6LfiBhQaAAAAAOkMOhj1vaTIWMzXfJZuHoIuYFUS"></re-captcha>
           </div>
           <p class="agree" (click)="openDialogTandC()">By registering, You accept our terms & conditions</p>
         </div>

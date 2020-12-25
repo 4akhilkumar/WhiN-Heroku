@@ -769,6 +769,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/form-field */ "kmnG");
 /* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/input */ "qFsG");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var ng_recaptcha__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ng-recaptcha */ "jCJ1");
+
+
 
 
 
@@ -816,11 +819,16 @@ function RegisterComponent_mat_error_54_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx_r2.getError());
 } }
 class RegisterComponent {
-    constructor(_auth, dialog, _router, snackbar) {
+    constructor(_auth, dialog, _router, _renderer, _http, snackbar) {
         this._auth = _auth;
         this.dialog = dialog;
         this._router = _router;
+        this._renderer = _renderer;
+        this._http = _http;
         this.snackbar = snackbar;
+        // public onError(errorDetails: RecaptchaErrorParameters): void {
+        //   console.log(`reCAPTCHA error encountered; details:`, errorDetails);
+        // }
         this.hide = true;
         this.registerUserData = { name: "", email: "", password: "" };
         this.registerData = {
@@ -857,6 +865,21 @@ class RegisterComponent {
         }
     }
     ngOnInit() {
+        let srcipt = this._renderer.createElement('script');
+        srcipt.defer = true;
+        srcipt.async = true;
+        srcipt.src = "https://www.google.com/recaptcha/api.js";
+        this._renderer.appendChild(document.body, srcipt);
+    }
+    resolved(token) {
+        console.log(token);
+        this.token = token;
+    }
+    verify() {
+        console.log(this.token);
+        this._http.post('http://localhost:3000/verify', { token: this.token }).subscribe(res => {
+            console.log("success or not ?", res);
+        });
     }
     registerUser() {
         this.registerUserData.email = this.registerData.email.value;
@@ -886,8 +909,8 @@ class RegisterComponent {
         });
     }
 }
-RegisterComponent.ɵfac = function RegisterComponent_Factory(t) { return new (t || RegisterComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"])); };
-RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: RegisterComponent, selectors: [["app-register"]], decls: 63, vars: 11, consts: [["fxLayout", "row", "fxLayoutGap", "10px", "fxLayout.sm", "column", "fxLayout.xs", "column", 2, "background-image", "url(../assets/images/register.webp)", "background-repeat", "no-repeat", "background-size", "100% 105%"], [1, "jumbo"], [2, "font-weight", "bold", "font-size", "x-large", "padding-top", "50px"], [1, "material-icons"], [2, "font-size", "large"], ["mat-raised-button", "", "routerLink", "/contactus", 1, "button"], ["fxLayoutAlign", "center center", 2, "padding", "40px"], ["fxLayout", "column", "fxLayoutAlign", "center", 1, "login-card"], [1, "example-card"], ["color", "primary", 1, "title"], ["fxLayout", "column", "fxLayoutAlign", "center center"], ["fxLayout", "row", "fxLayoutAlign", "center center", "fxLayoutGap", "5px"], ["aria-hidden", "true", 1, "fa", "fa-user-circle"], [1, "example"], ["matInput", "", "type", "text", "required", "", "minlength", "3", "onkeypress", "return (event.charCode > 64 && \n                    event.charCode < 91) || (event.charCode == 32) || (event.charCode > 96 && event.charCode < 123)", "placeholder", "Name", "required", "", 3, "formControl"], [4, "ngIf"], ["matInput", "", "type", "email", "pattern", "[a-z0-9._%+-]+@[a-z]+\\.[a-z]{2,}$", "placeholder", "Email", "required", "", 3, "formControl"], ["matSuffix", ""], ["matInput", "", "pattern", "(?=.*\\d)(?=.*[!()@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}", "placeholder", "Password", "required", "", 3, "type", "formControl"], ["mat-icon-button", "", "matSuffix", "", 3, "click"], [1, "agree", 3, "click"], ["fxLayout", "row", "fxLayoutAlign", "center"], ["mat-raised-button", "", 1, "example-button", 3, "disabled", "click"], ["routerLink", "/login", 1, "agree1", 2, "cursor", "pointer", "outline", "none"]], template: function RegisterComponent_Template(rf, ctx) { if (rf & 1) {
+RegisterComponent.ɵfac = function RegisterComponent_Factory(t) { return new (t || RegisterComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["Renderer2"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"])); };
+RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: RegisterComponent, selectors: [["app-register"]], decls: 65, vars: 11, consts: [["fxLayout", "row", "fxLayoutGap", "10px", "fxLayout.sm", "column", "fxLayout.xs", "column", 2, "background-image", "url(../assets/images/register.webp)", "background-repeat", "no-repeat", "background-size", "100% 105%"], [1, "jumbo"], [2, "font-weight", "bold", "font-size", "x-large", "padding-top", "50px"], [1, "material-icons"], [2, "font-size", "large"], ["mat-raised-button", "", "routerLink", "/contactus", 1, "button"], ["fxLayoutAlign", "center center", 2, "padding", "40px"], ["fxLayout", "column", "fxLayoutAlign", "center", 1, "login-card"], [1, "example-card"], ["color", "primary", 1, "title"], ["fxLayout", "column", "fxLayoutAlign", "center center"], ["fxLayout", "row", "fxLayoutAlign", "center center", "fxLayoutGap", "5px"], ["aria-hidden", "true", 1, "fa", "fa-user-circle"], [1, "example"], ["matInput", "", "type", "text", "required", "", "minlength", "3", "onkeypress", "return (event.charCode > 64 && \n                    event.charCode < 91) || (event.charCode == 32) || (event.charCode > 96 && event.charCode < 123)", "placeholder", "Name", "required", "", 3, "formControl"], [4, "ngIf"], ["matInput", "", "type", "email", "pattern", "[a-z0-9._%+-]+@[a-z]+\\.[a-z]{2,}$", "placeholder", "Email", "required", "", 3, "formControl"], ["matSuffix", ""], ["matInput", "", "pattern", "(?=.*\\d)(?=.*[!()@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}", "placeholder", "Password", "required", "", 3, "type", "formControl"], ["mat-icon-button", "", "matSuffix", "", 3, "click"], ["siteKey", "6LfiBhQaAAAAAOkMOhj1vaTIWMzXfJZuHoIuYFUS", 3, "resolved"], [1, "agree", 3, "click"], ["fxLayout", "row", "fxLayoutAlign", "center"], ["mat-raised-button", "", 1, "example-button", 3, "disabled", "click"], ["routerLink", "/login", 1, "agree1", 2, "cursor", "pointer", "outline", "none"]], template: function RegisterComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "h1", 2);
@@ -967,21 +990,26 @@ RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefine
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](54, RegisterComponent_mat_error_54_Template, 2, 1, "mat-error", 15);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](55, "p", 20);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function RegisterComponent_Template_p_click_55_listener() { return ctx.openDialogTandC(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](56, "By registering, You accept our terms & conditions");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](55, "div");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](56, "re-captcha", 20);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("resolved", function RegisterComponent_Template_re_captcha_resolved_56_listener($event) { return ctx.resolved($event); });
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](57, "div", 21);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](58, "button", 22);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function RegisterComponent_Template_button_click_58_listener() { return ctx.registerUser(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](59, "Register");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](57, "p", 21);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function RegisterComponent_Template_p_click_57_listener() { return ctx.openDialogTandC(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](58, "By registering, You accept our terms & conditions");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](60, "p", 23);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](61, "Already a Part in WhiN? Click here to Login");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](59, "div", 22);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](60, "button", 23);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function RegisterComponent_Template_button_click_60_listener() { return ctx.registerUser(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](61, "Register");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](62, "hr");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](62, "p", 24);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](63, "Already a Part in WhiN? Click here to Login");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](64, "hr");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
@@ -1003,9 +1031,9 @@ RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefine
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.hide ? "visibility_off" : "visibility");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx.registerData.password.invalid);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("disabled", ctx.registerData.password.invalid || ctx.registerData.name.invalid || ctx.registerData.email.invalid);
-    } }, directives: [_angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutGapDirective"], _angular_material_divider__WEBPACK_IMPORTED_MODULE_9__["MatDivider"], _angular_material_button__WEBPACK_IMPORTED_MODULE_10__["MatButton"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterLink"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutAlignDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_11__["MatCard"], _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_12__["MatToolbar"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_13__["MatIcon"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatFormField"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatLabel"], _angular_material_input__WEBPACK_IMPORTED_MODULE_15__["MatInput"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["MinLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _angular_common__WEBPACK_IMPORTED_MODULE_16__["NgIf"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["PatternValidator"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatSuffix"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatError"]], styles: [".example-card[_ngcontent-%COMP%] {\r\n  width: 350px;\r\n  padding: 0;\r\n  margin: 0; \r\n  box-shadow: 0px 0px 5px 5px rgb(245, 242, 242);\r\n  border-radius: 20px;\r\n  overflow: hidden;\r\n  transition: all 0.3s ease-out;\r\n  }\r\n\r\n  .example-card[_ngcontent-%COMP%]:hover {\r\n    transform: translateY(-5px) scale(1.005) translateZ(0);\r\n    box-shadow: 0 24px 36px rgba(0,0,0,0.11), 0 24px 46px var(--box-shadow-color);\r\n  }\r\n\r\n  .example-card[_ngcontent-%COMP%]:hover   .overlay[_ngcontent-%COMP%] {\r\n    transform: scale(4) translateZ(0);\r\n  }\r\n\r\n  .example[_ngcontent-%COMP%]{\r\n  width: 250px;\r\n  margin-top: 10px;\r\n}\r\n\r\n  .title[_ngcontent-%COMP%]{\r\n  font-family: \"Cera Pro\", \"HelveticaNeue\", \"Helvetica Neue\", \"HelveticaNeueRoman\", \"HelveticaNeue-Roman\", \"Helvetica Neue Roman\", \"TeXGyreHerosRegular\", \"Helvetica\", \"Tahoma\", \"Geneva\", \"Arial\", sans-serif;\r\n  font-weight: 700;\r\n  font-size: 25px;\r\n  color: white;\r\n  background-color: rgb(238, 235, 87);\r\n  justify-content: center;\r\n  text-transform: uppercase;\r\n  border-radius: 20px 20px 0px 0px;\r\n}\r\n\r\n  .example-button[_ngcontent-%COMP%]{\r\n  margin: 10px;\r\n  font-weight: bold;\r\n  letter-spacing: 0.1em;\r\n  background-color: rgb(238, 235, 87);\r\n  justify-content: center;\r\n  width: auto;\r\n}\r\n\r\n  .example-form[_ngcontent-%COMP%] {\r\n  min-width: 250px;\r\n  max-width: 500px;\r\n  width: 100%;\r\n}\r\n\r\n  .example-full-width[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\n\r\n  .jumbo[_ngcontent-%COMP%] {\r\n  padding: 18px 30px;\r\n  color: #fcfcfc;\r\n  min-height: 100px;\r\n}\r\n\r\n  .agree[_ngcontent-%COMP%] {\r\ntext-align: center;\r\nfont-weight: bold;\r\nmargin-top: 8px;\r\n}\r\n\r\n  .agree1[_ngcontent-%COMP%] {\r\ntext-align: center;\r\nfont-weight: bold;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJlZ2lzdGVyLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxZQUFZO0VBQ1osVUFBVTtFQUNWLFNBQVM7RUFDVCw4Q0FBOEM7RUFDOUMsbUJBQW1CO0VBQ25CLGdCQUFnQjtFQUNoQiw2QkFBNkI7RUFDN0I7O0VBRUE7SUFDRSxzREFBc0Q7SUFDdEQsNkVBQTZFO0VBQy9FOztFQUVBO0lBQ0UsaUNBQWlDO0VBQ25DOztFQUVGO0VBQ0UsWUFBWTtFQUNaLGdCQUFnQjtBQUNsQjs7RUFFQTtFQUNFLDRNQUE0TTtFQUM1TSxnQkFBZ0I7RUFDaEIsZUFBZTtFQUNmLFlBQVk7RUFDWixtQ0FBbUM7RUFDbkMsdUJBQXVCO0VBQ3ZCLHlCQUF5QjtFQUN6QixnQ0FBZ0M7QUFDbEM7O0VBRUE7RUFDRSxZQUFZO0VBQ1osaUJBQWlCO0VBQ2pCLHFCQUFxQjtFQUNyQixtQ0FBbUM7RUFDbkMsdUJBQXVCO0VBQ3ZCLFdBQVc7QUFDYjs7RUFFQTtFQUNFLGdCQUFnQjtFQUNoQixnQkFBZ0I7RUFDaEIsV0FBVztBQUNiOztFQUVBO0VBQ0UsV0FBVztBQUNiOztFQUVBO0VBQ0Usa0JBQWtCO0VBQ2xCLGNBQWM7RUFDZCxpQkFBaUI7QUFDbkI7O0VBRUE7QUFDQSxrQkFBa0I7QUFDbEIsaUJBQWlCO0FBQ2pCLGVBQWU7QUFDZjs7RUFDQTtBQUNBLGtCQUFrQjtBQUNsQixpQkFBaUI7QUFDakIiLCJmaWxlIjoicmVnaXN0ZXIuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5leGFtcGxlLWNhcmQge1xyXG4gIHdpZHRoOiAzNTBweDtcclxuICBwYWRkaW5nOiAwO1xyXG4gIG1hcmdpbjogMDsgXHJcbiAgYm94LXNoYWRvdzogMHB4IDBweCA1cHggNXB4IHJnYigyNDUsIDI0MiwgMjQyKTtcclxuICBib3JkZXItcmFkaXVzOiAyMHB4O1xyXG4gIG92ZXJmbG93OiBoaWRkZW47XHJcbiAgdHJhbnNpdGlvbjogYWxsIDAuM3MgZWFzZS1vdXQ7XHJcbiAgfVxyXG5cclxuICAuZXhhbXBsZS1jYXJkOmhvdmVyIHtcclxuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgtNXB4KSBzY2FsZSgxLjAwNSkgdHJhbnNsYXRlWigwKTtcclxuICAgIGJveC1zaGFkb3c6IDAgMjRweCAzNnB4IHJnYmEoMCwwLDAsMC4xMSksIDAgMjRweCA0NnB4IHZhcigtLWJveC1zaGFkb3ctY29sb3IpO1xyXG4gIH1cclxuICBcclxuICAuZXhhbXBsZS1jYXJkOmhvdmVyIC5vdmVybGF5IHtcclxuICAgIHRyYW5zZm9ybTogc2NhbGUoNCkgdHJhbnNsYXRlWigwKTtcclxuICB9XHJcblxyXG4uZXhhbXBsZXtcclxuICB3aWR0aDogMjUwcHg7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG5cclxuLnRpdGxle1xyXG4gIGZvbnQtZmFtaWx5OiBcIkNlcmEgUHJvXCIsIFwiSGVsdmV0aWNhTmV1ZVwiLCBcIkhlbHZldGljYSBOZXVlXCIsIFwiSGVsdmV0aWNhTmV1ZVJvbWFuXCIsIFwiSGVsdmV0aWNhTmV1ZS1Sb21hblwiLCBcIkhlbHZldGljYSBOZXVlIFJvbWFuXCIsIFwiVGVYR3lyZUhlcm9zUmVndWxhclwiLCBcIkhlbHZldGljYVwiLCBcIlRhaG9tYVwiLCBcIkdlbmV2YVwiLCBcIkFyaWFsXCIsIHNhbnMtc2VyaWY7XHJcbiAgZm9udC13ZWlnaHQ6IDcwMDtcclxuICBmb250LXNpemU6IDI1cHg7XHJcbiAgY29sb3I6IHdoaXRlO1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHJnYigyMzgsIDIzNSwgODcpO1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7XHJcbiAgYm9yZGVyLXJhZGl1czogMjBweCAyMHB4IDBweCAwcHg7XHJcbn1cclxuXHJcbi5leGFtcGxlLWJ1dHRvbntcclxuICBtYXJnaW46IDEwcHg7XHJcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XHJcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMWVtO1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHJnYigyMzgsIDIzNSwgODcpO1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIHdpZHRoOiBhdXRvO1xyXG59XHJcblxyXG4uZXhhbXBsZS1mb3JtIHtcclxuICBtaW4td2lkdGg6IDI1MHB4O1xyXG4gIG1heC13aWR0aDogNTAwcHg7XHJcbiAgd2lkdGg6IDEwMCU7XHJcbn1cclxuXHJcbi5leGFtcGxlLWZ1bGwtd2lkdGgge1xyXG4gIHdpZHRoOiAxMDAlO1xyXG59XHJcblxyXG4uanVtYm8ge1xyXG4gIHBhZGRpbmc6IDE4cHggMzBweDtcclxuICBjb2xvcjogI2ZjZmNmYztcclxuICBtaW4taGVpZ2h0OiAxMDBweDtcclxufVxyXG5cclxuLmFncmVlIHtcclxudGV4dC1hbGlnbjogY2VudGVyO1xyXG5mb250LXdlaWdodDogYm9sZDtcclxubWFyZ2luLXRvcDogOHB4O1xyXG59XHJcbi5hZ3JlZTEge1xyXG50ZXh0LWFsaWduOiBjZW50ZXI7XHJcbmZvbnQtd2VpZ2h0OiBib2xkO1xyXG59Il19 */"] });
+    } }, directives: [_angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutGapDirective"], _angular_material_divider__WEBPACK_IMPORTED_MODULE_9__["MatDivider"], _angular_material_button__WEBPACK_IMPORTED_MODULE_10__["MatButton"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterLink"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutAlignDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_11__["MatCard"], _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_12__["MatToolbar"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_13__["MatIcon"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatFormField"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatLabel"], _angular_material_input__WEBPACK_IMPORTED_MODULE_15__["MatInput"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["MinLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _angular_common__WEBPACK_IMPORTED_MODULE_16__["NgIf"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["PatternValidator"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatSuffix"], ng_recaptcha__WEBPACK_IMPORTED_MODULE_17__["RecaptchaComponent"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatError"]], styles: [".example-card[_ngcontent-%COMP%] {\r\n  width: 350px;\r\n  padding: 0;\r\n  margin: 0; \r\n  border-radius: 20px;\r\n}\r\n\r\n.example[_ngcontent-%COMP%]{\r\n  width: 250px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.title[_ngcontent-%COMP%]{\r\n  font-family: \"Cera Pro\", \"HelveticaNeue\", \"Helvetica Neue\", \"HelveticaNeueRoman\", \"HelveticaNeue-Roman\", \"Helvetica Neue Roman\", \"TeXGyreHerosRegular\", \"Helvetica\", \"Tahoma\", \"Geneva\", \"Arial\", sans-serif;\r\n  font-weight: 700;\r\n  font-size: 25px;\r\n  color: white;\r\n  background-color: rgb(238, 235, 87);\r\n  justify-content: center;\r\n  text-transform: uppercase;\r\n  border-radius: 20px 20px 0px 0px;\r\n}\r\n\r\n.example-button[_ngcontent-%COMP%]{\r\n  margin: 10px;\r\n  font-weight: bold;\r\n  letter-spacing: 0.1em;\r\n  background-color: rgb(238, 235, 87);\r\n  justify-content: center;\r\n  width: auto;\r\n}\r\n\r\n.example-form[_ngcontent-%COMP%] {\r\n  min-width: 250px;\r\n  max-width: 500px;\r\n  width: 100%;\r\n}\r\n\r\n.example-full-width[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\n\r\n.jumbo[_ngcontent-%COMP%] {\r\n  padding: 18px 30px;\r\n  color: #fcfcfc;\r\n  min-height: 100px;\r\n}\r\n\r\n.agree[_ngcontent-%COMP%] {\r\ntext-align: center;\r\nfont-weight: bold;\r\nmargin-top: 8px;\r\n}\r\n\r\n.agree1[_ngcontent-%COMP%] {\r\ntext-align: center;\r\nfont-weight: bold;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJlZ2lzdGVyLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxZQUFZO0VBQ1osVUFBVTtFQUNWLFNBQVM7RUFDVCxtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxZQUFZO0VBQ1osZ0JBQWdCO0FBQ2xCOztBQUVBO0VBQ0UsNE1BQTRNO0VBQzVNLGdCQUFnQjtFQUNoQixlQUFlO0VBQ2YsWUFBWTtFQUNaLG1DQUFtQztFQUNuQyx1QkFBdUI7RUFDdkIseUJBQXlCO0VBQ3pCLGdDQUFnQztBQUNsQzs7QUFFQTtFQUNFLFlBQVk7RUFDWixpQkFBaUI7RUFDakIscUJBQXFCO0VBQ3JCLG1DQUFtQztFQUNuQyx1QkFBdUI7RUFDdkIsV0FBVztBQUNiOztBQUVBO0VBQ0UsZ0JBQWdCO0VBQ2hCLGdCQUFnQjtFQUNoQixXQUFXO0FBQ2I7O0FBRUE7RUFDRSxXQUFXO0FBQ2I7O0FBRUE7RUFDRSxrQkFBa0I7RUFDbEIsY0FBYztFQUNkLGlCQUFpQjtBQUNuQjs7QUFFQTtBQUNBLGtCQUFrQjtBQUNsQixpQkFBaUI7QUFDakIsZUFBZTtBQUNmOztBQUNBO0FBQ0Esa0JBQWtCO0FBQ2xCLGlCQUFpQjtBQUNqQiIsImZpbGUiOiJyZWdpc3Rlci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmV4YW1wbGUtY2FyZCB7XHJcbiAgd2lkdGg6IDM1MHB4O1xyXG4gIHBhZGRpbmc6IDA7XHJcbiAgbWFyZ2luOiAwOyBcclxuICBib3JkZXItcmFkaXVzOiAyMHB4O1xyXG59XHJcblxyXG4uZXhhbXBsZXtcclxuICB3aWR0aDogMjUwcHg7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG5cclxuLnRpdGxle1xyXG4gIGZvbnQtZmFtaWx5OiBcIkNlcmEgUHJvXCIsIFwiSGVsdmV0aWNhTmV1ZVwiLCBcIkhlbHZldGljYSBOZXVlXCIsIFwiSGVsdmV0aWNhTmV1ZVJvbWFuXCIsIFwiSGVsdmV0aWNhTmV1ZS1Sb21hblwiLCBcIkhlbHZldGljYSBOZXVlIFJvbWFuXCIsIFwiVGVYR3lyZUhlcm9zUmVndWxhclwiLCBcIkhlbHZldGljYVwiLCBcIlRhaG9tYVwiLCBcIkdlbmV2YVwiLCBcIkFyaWFsXCIsIHNhbnMtc2VyaWY7XHJcbiAgZm9udC13ZWlnaHQ6IDcwMDtcclxuICBmb250LXNpemU6IDI1cHg7XHJcbiAgY29sb3I6IHdoaXRlO1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHJnYigyMzgsIDIzNSwgODcpO1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7XHJcbiAgYm9yZGVyLXJhZGl1czogMjBweCAyMHB4IDBweCAwcHg7XHJcbn1cclxuXHJcbi5leGFtcGxlLWJ1dHRvbntcclxuICBtYXJnaW46IDEwcHg7XHJcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XHJcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMWVtO1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHJnYigyMzgsIDIzNSwgODcpO1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIHdpZHRoOiBhdXRvO1xyXG59XHJcblxyXG4uZXhhbXBsZS1mb3JtIHtcclxuICBtaW4td2lkdGg6IDI1MHB4O1xyXG4gIG1heC13aWR0aDogNTAwcHg7XHJcbiAgd2lkdGg6IDEwMCU7XHJcbn1cclxuXHJcbi5leGFtcGxlLWZ1bGwtd2lkdGgge1xyXG4gIHdpZHRoOiAxMDAlO1xyXG59XHJcblxyXG4uanVtYm8ge1xyXG4gIHBhZGRpbmc6IDE4cHggMzBweDtcclxuICBjb2xvcjogI2ZjZmNmYztcclxuICBtaW4taGVpZ2h0OiAxMDBweDtcclxufVxyXG5cclxuLmFncmVlIHtcclxudGV4dC1hbGlnbjogY2VudGVyO1xyXG5mb250LXdlaWdodDogYm9sZDtcclxubWFyZ2luLXRvcDogOHB4O1xyXG59XHJcbi5hZ3JlZTEge1xyXG50ZXh0LWFsaWduOiBjZW50ZXI7XHJcbmZvbnQtd2VpZ2h0OiBib2xkO1xyXG59Il19 */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](RegisterComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"],
         args: [{
@@ -1013,7 +1041,7 @@ RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefine
                 templateUrl: './register.component.html',
                 styleUrls: ['./register.component.css']
             }]
-    }], function () { return [{ type: _auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"] }, { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"] }, { type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"] }]; }, null); })();
+    }], function () { return [{ type: _auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"] }, { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Renderer2"] }, { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClient"] }, { type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"] }]; }, null); })();
 
 
 /***/ }),
@@ -7218,61 +7246,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./welcome/welcome.component */ "J7Q4");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
-/* harmony import */ var _hospitality_hospitality_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./hospitality/hospitality.component */ "nnKZ");
-/* harmony import */ var _travel_travel_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./travel/travel.component */ "58pj");
-/* harmony import */ var _tourism_tourism_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./tourism/tourism.component */ "L1PL");
-/* harmony import */ var _aboutus_aboutus_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./aboutus/aboutus.component */ "pn0X");
-/* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/flex-layout */ "YUcS");
-/* harmony import */ var _footer_footer_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./footer/footer.component */ "fp1T");
-/* harmony import */ var _donate_donate_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./donate/donate.component */ "LjdP");
-/* harmony import */ var _donationform_donationform_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./donationform/donationform.component */ "FMPG");
-/* harmony import */ var _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./contactus/contactus.component */ "sOoW");
-/* harmony import */ var _booktravel_booktravel_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./booktravel/booktravel.component */ "q2s+");
-/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "QX6l");
-/* harmony import */ var _travelplaces_goa_goa_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./travelplaces/goa/goa.component */ "HByg");
-/* harmony import */ var _travelplaces_mcleodganj_mcleodganj_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./travelplaces/mcleodganj/mcleodganj.component */ "/73c");
-/* harmony import */ var _travelplaces_srinagar_srinagar_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./travelplaces/srinagar/srinagar.component */ "CwEQ");
-/* harmony import */ var _travelplaces_coorg_coorg_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./travelplaces/coorg/coorg.component */ "OaC3");
-/* harmony import */ var _travelplaces_kerala_kerala_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./travelplaces/kerala/kerala.component */ "SE0d");
-/* harmony import */ var _travelplaces_kanatal_kanatal_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./travelplaces/kanatal/kanatal.component */ "BiFZ");
-/* harmony import */ var _travelplaces_kasol_kasol_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./travelplaces/kasol/kasol.component */ "/6Ye");
-/* harmony import */ var _travelplaces_kutch_kutch_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./travelplaces/kutch/kutch.component */ "Ds09");
-/* harmony import */ var _travelplaces_lehladakh_lehladakh_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./travelplaces/lehladakh/lehladakh.component */ "0/2a");
-/* harmony import */ var _travelplaces_andaman_andaman_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./travelplaces/andaman/andaman.component */ "khq7");
-/* harmony import */ var _travelplaces_binsar_binsar_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./travelplaces/binsar/binsar.component */ "UWSN");
-/* harmony import */ var _travelplaces_birbilling_birbilling_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./travelplaces/birbilling/birbilling.component */ "LJWE");
-/* harmony import */ var _tourismplaces_tajmahal_tajmahal_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./tourismplaces/tajmahal/tajmahal.component */ "U+Qd");
-/* harmony import */ var _tourismplaces_varanasi_varanasi_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./tourismplaces/varanasi/varanasi.component */ "1sfx");
-/* harmony import */ var _tourismplaces_harmandir_harmandir_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./tourismplaces/harmandir/harmandir.component */ "DSM1");
-/* harmony import */ var _tourismplaces_jaisalmer_jaisalmer_component__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./tourismplaces/jaisalmer/jaisalmer.component */ "4qHs");
-/* harmony import */ var _tourismplaces_redfort_redfort_component__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./tourismplaces/redfort/redfort.component */ "JLKb");
-/* harmony import */ var _tourismplaces_goi_goi_component__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./tourismplaces/goi/goi.component */ "7K+8");
-/* harmony import */ var _tourismplaces_meccamasjid_meccamasjid_component__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./tourismplaces/meccamasjid/meccamasjid.component */ "cNZM");
-/* harmony import */ var _tourismplaces_amerfort_amerfort_component__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./tourismplaces/amerfort/amerfort.component */ "gBzM");
-/* harmony import */ var _tourismplaces_bog_bog_component__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./tourismplaces/bog/bog.component */ "KyB8");
-/* harmony import */ var _tourismplaces_periyar_periyar_component__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./tourismplaces/periyar/periyar.component */ "0FgE");
-/* harmony import */ var _tourismplaces_agrafort_agrafort_component__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./tourismplaces/agrafort/agrafort.component */ "Iu0n");
-/* harmony import */ var _tourismplaces_elloracaves_elloracaves_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./tourismplaces/elloracaves/elloracaves.component */ "MVOh");
-/* harmony import */ var _booktour_booktour_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./booktour/booktour.component */ "zwOP");
-/* harmony import */ var _hospitalityplaces_hyatt_hyatt_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./hospitalityplaces/hyatt/hyatt.component */ "6lDX");
-/* harmony import */ var _hospitalityplaces_inter_inter_component__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./hospitalityplaces/inter/inter.component */ "2eNQ");
-/* harmony import */ var _hospitalityplaces_marriott_marriott_component__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./hospitalityplaces/marriott/marriott.component */ "JBTr");
-/* harmony import */ var _hospitalityplaces_radisson_radisson_component__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./hospitalityplaces/radisson/radisson.component */ "F7ik");
-/* harmony import */ var _hospitalityplaces_shangri_shangri_component__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./hospitalityplaces/shangri/shangri.component */ "upBN");
-/* harmony import */ var _hospitalityplaces_taj_taj_component__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./hospitalityplaces/taj/taj.component */ "06jr");
-/* harmony import */ var _hospitalityplaces_lalit_lalit_component__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./hospitalityplaces/lalit/lalit.component */ "y8ov");
-/* harmony import */ var _hospitalityplaces_leela_leela_component__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./hospitalityplaces/leela/leela.component */ "mV/f");
-/* harmony import */ var _bookhospitality_bookhospitality_component__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./bookhospitality/bookhospitality.component */ "q0e6");
-/* harmony import */ var _traveldashboard_traveldashboard_component__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./traveldashboard/traveldashboard.component */ "x0/6");
-/* harmony import */ var _tourdashboard_tourdashboard_component__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./tourdashboard/tourdashboard.component */ "szYO");
-/* harmony import */ var _hospitalitydashboard_hospitalitydashboard_component__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./hospitalitydashboard/hospitalitydashboard.component */ "33Lo");
-/* harmony import */ var _donationdashboard_donationdashboard_component__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./donationdashboard/donationdashboard.component */ "Qj4Z");
-/* harmony import */ var _termsandconditions_termsandconditions_component__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./termsandconditions/termsandconditions.component */ "mh4D");
-/* harmony import */ var _hospitalityplaces_oberoi_oberoi_component__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./hospitalityplaces/oberoi/oberoi.component */ "Vq9J");
-/* harmony import */ var _allinone_allinone_component__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./allinone/allinone.component */ "DQbA");
-/* harmony import */ var _profile_profile_component__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./profile/profile.component */ "W6KJ");
-/* harmony import */ var _editprofile_editprofile_component__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./editprofile/editprofile.component */ "aEgf");
-/* harmony import */ var _deleteaccount_deleteaccount_component__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./deleteaccount/deleteaccount.component */ "MZ04");
+/* harmony import */ var ng_recaptcha__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ng-recaptcha */ "jCJ1");
+/* harmony import */ var _hospitality_hospitality_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./hospitality/hospitality.component */ "nnKZ");
+/* harmony import */ var _travel_travel_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./travel/travel.component */ "58pj");
+/* harmony import */ var _tourism_tourism_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./tourism/tourism.component */ "L1PL");
+/* harmony import */ var _aboutus_aboutus_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./aboutus/aboutus.component */ "pn0X");
+/* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/flex-layout */ "YUcS");
+/* harmony import */ var _footer_footer_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./footer/footer.component */ "fp1T");
+/* harmony import */ var _donate_donate_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./donate/donate.component */ "LjdP");
+/* harmony import */ var _donationform_donationform_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./donationform/donationform.component */ "FMPG");
+/* harmony import */ var _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./contactus/contactus.component */ "sOoW");
+/* harmony import */ var _booktravel_booktravel_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./booktravel/booktravel.component */ "q2s+");
+/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "QX6l");
+/* harmony import */ var _travelplaces_goa_goa_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./travelplaces/goa/goa.component */ "HByg");
+/* harmony import */ var _travelplaces_mcleodganj_mcleodganj_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./travelplaces/mcleodganj/mcleodganj.component */ "/73c");
+/* harmony import */ var _travelplaces_srinagar_srinagar_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./travelplaces/srinagar/srinagar.component */ "CwEQ");
+/* harmony import */ var _travelplaces_coorg_coorg_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./travelplaces/coorg/coorg.component */ "OaC3");
+/* harmony import */ var _travelplaces_kerala_kerala_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./travelplaces/kerala/kerala.component */ "SE0d");
+/* harmony import */ var _travelplaces_kanatal_kanatal_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./travelplaces/kanatal/kanatal.component */ "BiFZ");
+/* harmony import */ var _travelplaces_kasol_kasol_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./travelplaces/kasol/kasol.component */ "/6Ye");
+/* harmony import */ var _travelplaces_kutch_kutch_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./travelplaces/kutch/kutch.component */ "Ds09");
+/* harmony import */ var _travelplaces_lehladakh_lehladakh_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./travelplaces/lehladakh/lehladakh.component */ "0/2a");
+/* harmony import */ var _travelplaces_andaman_andaman_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./travelplaces/andaman/andaman.component */ "khq7");
+/* harmony import */ var _travelplaces_binsar_binsar_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./travelplaces/binsar/binsar.component */ "UWSN");
+/* harmony import */ var _travelplaces_birbilling_birbilling_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./travelplaces/birbilling/birbilling.component */ "LJWE");
+/* harmony import */ var _tourismplaces_tajmahal_tajmahal_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./tourismplaces/tajmahal/tajmahal.component */ "U+Qd");
+/* harmony import */ var _tourismplaces_varanasi_varanasi_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./tourismplaces/varanasi/varanasi.component */ "1sfx");
+/* harmony import */ var _tourismplaces_harmandir_harmandir_component__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./tourismplaces/harmandir/harmandir.component */ "DSM1");
+/* harmony import */ var _tourismplaces_jaisalmer_jaisalmer_component__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./tourismplaces/jaisalmer/jaisalmer.component */ "4qHs");
+/* harmony import */ var _tourismplaces_redfort_redfort_component__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./tourismplaces/redfort/redfort.component */ "JLKb");
+/* harmony import */ var _tourismplaces_goi_goi_component__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./tourismplaces/goi/goi.component */ "7K+8");
+/* harmony import */ var _tourismplaces_meccamasjid_meccamasjid_component__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./tourismplaces/meccamasjid/meccamasjid.component */ "cNZM");
+/* harmony import */ var _tourismplaces_amerfort_amerfort_component__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./tourismplaces/amerfort/amerfort.component */ "gBzM");
+/* harmony import */ var _tourismplaces_bog_bog_component__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./tourismplaces/bog/bog.component */ "KyB8");
+/* harmony import */ var _tourismplaces_periyar_periyar_component__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./tourismplaces/periyar/periyar.component */ "0FgE");
+/* harmony import */ var _tourismplaces_agrafort_agrafort_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./tourismplaces/agrafort/agrafort.component */ "Iu0n");
+/* harmony import */ var _tourismplaces_elloracaves_elloracaves_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./tourismplaces/elloracaves/elloracaves.component */ "MVOh");
+/* harmony import */ var _booktour_booktour_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./booktour/booktour.component */ "zwOP");
+/* harmony import */ var _hospitalityplaces_hyatt_hyatt_component__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./hospitalityplaces/hyatt/hyatt.component */ "6lDX");
+/* harmony import */ var _hospitalityplaces_inter_inter_component__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./hospitalityplaces/inter/inter.component */ "2eNQ");
+/* harmony import */ var _hospitalityplaces_marriott_marriott_component__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./hospitalityplaces/marriott/marriott.component */ "JBTr");
+/* harmony import */ var _hospitalityplaces_radisson_radisson_component__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./hospitalityplaces/radisson/radisson.component */ "F7ik");
+/* harmony import */ var _hospitalityplaces_shangri_shangri_component__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./hospitalityplaces/shangri/shangri.component */ "upBN");
+/* harmony import */ var _hospitalityplaces_taj_taj_component__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./hospitalityplaces/taj/taj.component */ "06jr");
+/* harmony import */ var _hospitalityplaces_lalit_lalit_component__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./hospitalityplaces/lalit/lalit.component */ "y8ov");
+/* harmony import */ var _hospitalityplaces_leela_leela_component__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./hospitalityplaces/leela/leela.component */ "mV/f");
+/* harmony import */ var _bookhospitality_bookhospitality_component__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./bookhospitality/bookhospitality.component */ "q0e6");
+/* harmony import */ var _traveldashboard_traveldashboard_component__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./traveldashboard/traveldashboard.component */ "x0/6");
+/* harmony import */ var _tourdashboard_tourdashboard_component__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./tourdashboard/tourdashboard.component */ "szYO");
+/* harmony import */ var _hospitalitydashboard_hospitalitydashboard_component__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./hospitalitydashboard/hospitalitydashboard.component */ "33Lo");
+/* harmony import */ var _donationdashboard_donationdashboard_component__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./donationdashboard/donationdashboard.component */ "Qj4Z");
+/* harmony import */ var _termsandconditions_termsandconditions_component__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./termsandconditions/termsandconditions.component */ "mh4D");
+/* harmony import */ var _hospitalityplaces_oberoi_oberoi_component__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./hospitalityplaces/oberoi/oberoi.component */ "Vq9J");
+/* harmony import */ var _allinone_allinone_component__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./allinone/allinone.component */ "DQbA");
+/* harmony import */ var _profile_profile_component__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./profile/profile.component */ "W6KJ");
+/* harmony import */ var _editprofile_editprofile_component__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./editprofile/editprofile.component */ "aEgf");
+/* harmony import */ var _deleteaccount_deleteaccount_component__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./deleteaccount/deleteaccount.component */ "MZ04");
+
 
 
 
@@ -7353,74 +7383,78 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
             _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_11__["FormsModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_11__["ReactiveFormsModule"],
-            _angular_flex_layout__WEBPACK_IMPORTED_MODULE_16__["FlexLayoutModule"]
+            _angular_flex_layout__WEBPACK_IMPORTED_MODULE_17__["FlexLayoutModule"],
+            ng_recaptcha__WEBPACK_IMPORTED_MODULE_12__["RecaptchaModule"],
+            ng_recaptcha__WEBPACK_IMPORTED_MODULE_12__["RecaptchaFormsModule"]
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"],
         _login_login_component__WEBPACK_IMPORTED_MODULE_5__["LoginComponent"],
         _register_register_component__WEBPACK_IMPORTED_MODULE_6__["RegisterComponent"],
         _home_home_component__WEBPACK_IMPORTED_MODULE_7__["HomeComponent"],
         _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_9__["WelcomeComponent"],
-        _hospitality_hospitality_component__WEBPACK_IMPORTED_MODULE_12__["HospitalityComponent"],
-        _travel_travel_component__WEBPACK_IMPORTED_MODULE_13__["TravelComponent"],
-        _tourism_tourism_component__WEBPACK_IMPORTED_MODULE_14__["TourismComponent"],
-        _aboutus_aboutus_component__WEBPACK_IMPORTED_MODULE_15__["AboutusComponent"],
-        _footer_footer_component__WEBPACK_IMPORTED_MODULE_17__["FooterComponent"],
-        _donate_donate_component__WEBPACK_IMPORTED_MODULE_18__["DonateComponent"],
-        _donationform_donationform_component__WEBPACK_IMPORTED_MODULE_19__["DonationformComponent"],
-        _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_20__["ContactusComponent"],
-        _booktravel_booktravel_component__WEBPACK_IMPORTED_MODULE_21__["BooktravelComponent"],
-        _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_22__["DashboardComponent"],
-        _travelplaces_goa_goa_component__WEBPACK_IMPORTED_MODULE_23__["GoaComponent"],
-        _travelplaces_mcleodganj_mcleodganj_component__WEBPACK_IMPORTED_MODULE_24__["McleodganjComponent"],
-        _travelplaces_srinagar_srinagar_component__WEBPACK_IMPORTED_MODULE_25__["SrinagarComponent"],
-        _travelplaces_coorg_coorg_component__WEBPACK_IMPORTED_MODULE_26__["CoorgComponent"],
-        _travelplaces_kerala_kerala_component__WEBPACK_IMPORTED_MODULE_27__["KeralaComponent"],
-        _travelplaces_kanatal_kanatal_component__WEBPACK_IMPORTED_MODULE_28__["KanatalComponent"],
-        _travelplaces_kasol_kasol_component__WEBPACK_IMPORTED_MODULE_29__["KasolComponent"],
-        _travelplaces_kutch_kutch_component__WEBPACK_IMPORTED_MODULE_30__["KutchComponent"],
-        _travelplaces_lehladakh_lehladakh_component__WEBPACK_IMPORTED_MODULE_31__["LehladakhComponent"],
-        _travelplaces_andaman_andaman_component__WEBPACK_IMPORTED_MODULE_32__["AndamanComponent"],
-        _travelplaces_binsar_binsar_component__WEBPACK_IMPORTED_MODULE_33__["BinsarComponent"],
-        _travelplaces_birbilling_birbilling_component__WEBPACK_IMPORTED_MODULE_34__["BirbillingComponent"],
-        _tourismplaces_tajmahal_tajmahal_component__WEBPACK_IMPORTED_MODULE_35__["TajmahalComponent"],
-        _tourismplaces_varanasi_varanasi_component__WEBPACK_IMPORTED_MODULE_36__["VaranasiComponent"],
-        _tourismplaces_harmandir_harmandir_component__WEBPACK_IMPORTED_MODULE_37__["HarmandirComponent"],
-        _tourismplaces_jaisalmer_jaisalmer_component__WEBPACK_IMPORTED_MODULE_38__["JaisalmerComponent"],
-        _tourismplaces_redfort_redfort_component__WEBPACK_IMPORTED_MODULE_39__["RedfortComponent"],
-        _tourismplaces_goi_goi_component__WEBPACK_IMPORTED_MODULE_40__["GoiComponent"],
-        _tourismplaces_meccamasjid_meccamasjid_component__WEBPACK_IMPORTED_MODULE_41__["MeccamasjidComponent"],
-        _tourismplaces_amerfort_amerfort_component__WEBPACK_IMPORTED_MODULE_42__["AmerfortComponent"],
-        _tourismplaces_bog_bog_component__WEBPACK_IMPORTED_MODULE_43__["BogComponent"],
-        _tourismplaces_periyar_periyar_component__WEBPACK_IMPORTED_MODULE_44__["PeriyarComponent"],
-        _tourismplaces_agrafort_agrafort_component__WEBPACK_IMPORTED_MODULE_45__["AgrafortComponent"],
-        _tourismplaces_elloracaves_elloracaves_component__WEBPACK_IMPORTED_MODULE_46__["ElloracavesComponent"],
-        _booktour_booktour_component__WEBPACK_IMPORTED_MODULE_47__["BooktourComponent"],
-        _hospitalityplaces_hyatt_hyatt_component__WEBPACK_IMPORTED_MODULE_48__["HyattComponent"],
-        _hospitalityplaces_inter_inter_component__WEBPACK_IMPORTED_MODULE_49__["InterComponent"],
-        _hospitalityplaces_marriott_marriott_component__WEBPACK_IMPORTED_MODULE_50__["MarriottComponent"],
-        _hospitalityplaces_radisson_radisson_component__WEBPACK_IMPORTED_MODULE_51__["RadissonComponent"],
-        _hospitalityplaces_shangri_shangri_component__WEBPACK_IMPORTED_MODULE_52__["ShangriComponent"],
-        _hospitalityplaces_taj_taj_component__WEBPACK_IMPORTED_MODULE_53__["TajComponent"],
-        _hospitalityplaces_lalit_lalit_component__WEBPACK_IMPORTED_MODULE_54__["LalitComponent"],
-        _hospitalityplaces_leela_leela_component__WEBPACK_IMPORTED_MODULE_55__["LeelaComponent"],
-        _bookhospitality_bookhospitality_component__WEBPACK_IMPORTED_MODULE_56__["BookhospitalityComponent"],
-        _traveldashboard_traveldashboard_component__WEBPACK_IMPORTED_MODULE_57__["TraveldashboardComponent"],
-        _tourdashboard_tourdashboard_component__WEBPACK_IMPORTED_MODULE_58__["TourdashboardComponent"],
-        _hospitalitydashboard_hospitalitydashboard_component__WEBPACK_IMPORTED_MODULE_59__["HospitalitydashboardComponent"],
-        _donationdashboard_donationdashboard_component__WEBPACK_IMPORTED_MODULE_60__["DonationdashboardComponent"],
-        _termsandconditions_termsandconditions_component__WEBPACK_IMPORTED_MODULE_61__["TermsandconditionsComponent"],
-        _hospitalityplaces_oberoi_oberoi_component__WEBPACK_IMPORTED_MODULE_62__["OberoiComponent"],
-        _allinone_allinone_component__WEBPACK_IMPORTED_MODULE_63__["AllinoneComponent"],
-        _profile_profile_component__WEBPACK_IMPORTED_MODULE_64__["ProfileComponent"],
-        _editprofile_editprofile_component__WEBPACK_IMPORTED_MODULE_65__["EditprofileComponent"],
-        _deleteaccount_deleteaccount_component__WEBPACK_IMPORTED_MODULE_66__["DeleteaccountComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
+        _hospitality_hospitality_component__WEBPACK_IMPORTED_MODULE_13__["HospitalityComponent"],
+        _travel_travel_component__WEBPACK_IMPORTED_MODULE_14__["TravelComponent"],
+        _tourism_tourism_component__WEBPACK_IMPORTED_MODULE_15__["TourismComponent"],
+        _aboutus_aboutus_component__WEBPACK_IMPORTED_MODULE_16__["AboutusComponent"],
+        _footer_footer_component__WEBPACK_IMPORTED_MODULE_18__["FooterComponent"],
+        _donate_donate_component__WEBPACK_IMPORTED_MODULE_19__["DonateComponent"],
+        _donationform_donationform_component__WEBPACK_IMPORTED_MODULE_20__["DonationformComponent"],
+        _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_21__["ContactusComponent"],
+        _booktravel_booktravel_component__WEBPACK_IMPORTED_MODULE_22__["BooktravelComponent"],
+        _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_23__["DashboardComponent"],
+        _travelplaces_goa_goa_component__WEBPACK_IMPORTED_MODULE_24__["GoaComponent"],
+        _travelplaces_mcleodganj_mcleodganj_component__WEBPACK_IMPORTED_MODULE_25__["McleodganjComponent"],
+        _travelplaces_srinagar_srinagar_component__WEBPACK_IMPORTED_MODULE_26__["SrinagarComponent"],
+        _travelplaces_coorg_coorg_component__WEBPACK_IMPORTED_MODULE_27__["CoorgComponent"],
+        _travelplaces_kerala_kerala_component__WEBPACK_IMPORTED_MODULE_28__["KeralaComponent"],
+        _travelplaces_kanatal_kanatal_component__WEBPACK_IMPORTED_MODULE_29__["KanatalComponent"],
+        _travelplaces_kasol_kasol_component__WEBPACK_IMPORTED_MODULE_30__["KasolComponent"],
+        _travelplaces_kutch_kutch_component__WEBPACK_IMPORTED_MODULE_31__["KutchComponent"],
+        _travelplaces_lehladakh_lehladakh_component__WEBPACK_IMPORTED_MODULE_32__["LehladakhComponent"],
+        _travelplaces_andaman_andaman_component__WEBPACK_IMPORTED_MODULE_33__["AndamanComponent"],
+        _travelplaces_binsar_binsar_component__WEBPACK_IMPORTED_MODULE_34__["BinsarComponent"],
+        _travelplaces_birbilling_birbilling_component__WEBPACK_IMPORTED_MODULE_35__["BirbillingComponent"],
+        _tourismplaces_tajmahal_tajmahal_component__WEBPACK_IMPORTED_MODULE_36__["TajmahalComponent"],
+        _tourismplaces_varanasi_varanasi_component__WEBPACK_IMPORTED_MODULE_37__["VaranasiComponent"],
+        _tourismplaces_harmandir_harmandir_component__WEBPACK_IMPORTED_MODULE_38__["HarmandirComponent"],
+        _tourismplaces_jaisalmer_jaisalmer_component__WEBPACK_IMPORTED_MODULE_39__["JaisalmerComponent"],
+        _tourismplaces_redfort_redfort_component__WEBPACK_IMPORTED_MODULE_40__["RedfortComponent"],
+        _tourismplaces_goi_goi_component__WEBPACK_IMPORTED_MODULE_41__["GoiComponent"],
+        _tourismplaces_meccamasjid_meccamasjid_component__WEBPACK_IMPORTED_MODULE_42__["MeccamasjidComponent"],
+        _tourismplaces_amerfort_amerfort_component__WEBPACK_IMPORTED_MODULE_43__["AmerfortComponent"],
+        _tourismplaces_bog_bog_component__WEBPACK_IMPORTED_MODULE_44__["BogComponent"],
+        _tourismplaces_periyar_periyar_component__WEBPACK_IMPORTED_MODULE_45__["PeriyarComponent"],
+        _tourismplaces_agrafort_agrafort_component__WEBPACK_IMPORTED_MODULE_46__["AgrafortComponent"],
+        _tourismplaces_elloracaves_elloracaves_component__WEBPACK_IMPORTED_MODULE_47__["ElloracavesComponent"],
+        _booktour_booktour_component__WEBPACK_IMPORTED_MODULE_48__["BooktourComponent"],
+        _hospitalityplaces_hyatt_hyatt_component__WEBPACK_IMPORTED_MODULE_49__["HyattComponent"],
+        _hospitalityplaces_inter_inter_component__WEBPACK_IMPORTED_MODULE_50__["InterComponent"],
+        _hospitalityplaces_marriott_marriott_component__WEBPACK_IMPORTED_MODULE_51__["MarriottComponent"],
+        _hospitalityplaces_radisson_radisson_component__WEBPACK_IMPORTED_MODULE_52__["RadissonComponent"],
+        _hospitalityplaces_shangri_shangri_component__WEBPACK_IMPORTED_MODULE_53__["ShangriComponent"],
+        _hospitalityplaces_taj_taj_component__WEBPACK_IMPORTED_MODULE_54__["TajComponent"],
+        _hospitalityplaces_lalit_lalit_component__WEBPACK_IMPORTED_MODULE_55__["LalitComponent"],
+        _hospitalityplaces_leela_leela_component__WEBPACK_IMPORTED_MODULE_56__["LeelaComponent"],
+        _bookhospitality_bookhospitality_component__WEBPACK_IMPORTED_MODULE_57__["BookhospitalityComponent"],
+        _traveldashboard_traveldashboard_component__WEBPACK_IMPORTED_MODULE_58__["TraveldashboardComponent"],
+        _tourdashboard_tourdashboard_component__WEBPACK_IMPORTED_MODULE_59__["TourdashboardComponent"],
+        _hospitalitydashboard_hospitalitydashboard_component__WEBPACK_IMPORTED_MODULE_60__["HospitalitydashboardComponent"],
+        _donationdashboard_donationdashboard_component__WEBPACK_IMPORTED_MODULE_61__["DonationdashboardComponent"],
+        _termsandconditions_termsandconditions_component__WEBPACK_IMPORTED_MODULE_62__["TermsandconditionsComponent"],
+        _hospitalityplaces_oberoi_oberoi_component__WEBPACK_IMPORTED_MODULE_63__["OberoiComponent"],
+        _allinone_allinone_component__WEBPACK_IMPORTED_MODULE_64__["AllinoneComponent"],
+        _profile_profile_component__WEBPACK_IMPORTED_MODULE_65__["ProfileComponent"],
+        _editprofile_editprofile_component__WEBPACK_IMPORTED_MODULE_66__["EditprofileComponent"],
+        _deleteaccount_deleteaccount_component__WEBPACK_IMPORTED_MODULE_67__["DeleteaccountComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
         _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"],
         _material_material_module__WEBPACK_IMPORTED_MODULE_4__["MaterialModule"],
         _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_8__["BrowserAnimationsModule"],
         _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_11__["FormsModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_11__["ReactiveFormsModule"],
-        _angular_flex_layout__WEBPACK_IMPORTED_MODULE_16__["FlexLayoutModule"]] }); })();
+        _angular_flex_layout__WEBPACK_IMPORTED_MODULE_17__["FlexLayoutModule"],
+        ng_recaptcha__WEBPACK_IMPORTED_MODULE_12__["RecaptchaModule"],
+        ng_recaptcha__WEBPACK_IMPORTED_MODULE_12__["RecaptchaFormsModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](AppModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
@@ -7430,60 +7464,60 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
                     _register_register_component__WEBPACK_IMPORTED_MODULE_6__["RegisterComponent"],
                     _home_home_component__WEBPACK_IMPORTED_MODULE_7__["HomeComponent"],
                     _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_9__["WelcomeComponent"],
-                    _hospitality_hospitality_component__WEBPACK_IMPORTED_MODULE_12__["HospitalityComponent"],
-                    _travel_travel_component__WEBPACK_IMPORTED_MODULE_13__["TravelComponent"],
-                    _tourism_tourism_component__WEBPACK_IMPORTED_MODULE_14__["TourismComponent"],
-                    _aboutus_aboutus_component__WEBPACK_IMPORTED_MODULE_15__["AboutusComponent"],
-                    _footer_footer_component__WEBPACK_IMPORTED_MODULE_17__["FooterComponent"],
-                    _donate_donate_component__WEBPACK_IMPORTED_MODULE_18__["DonateComponent"],
-                    _donationform_donationform_component__WEBPACK_IMPORTED_MODULE_19__["DonationformComponent"],
-                    _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_20__["ContactusComponent"],
-                    _booktravel_booktravel_component__WEBPACK_IMPORTED_MODULE_21__["BooktravelComponent"],
-                    _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_22__["DashboardComponent"],
-                    _travelplaces_goa_goa_component__WEBPACK_IMPORTED_MODULE_23__["GoaComponent"],
-                    _travelplaces_mcleodganj_mcleodganj_component__WEBPACK_IMPORTED_MODULE_24__["McleodganjComponent"],
-                    _travelplaces_srinagar_srinagar_component__WEBPACK_IMPORTED_MODULE_25__["SrinagarComponent"],
-                    _travelplaces_coorg_coorg_component__WEBPACK_IMPORTED_MODULE_26__["CoorgComponent"],
-                    _travelplaces_kerala_kerala_component__WEBPACK_IMPORTED_MODULE_27__["KeralaComponent"],
-                    _travelplaces_kanatal_kanatal_component__WEBPACK_IMPORTED_MODULE_28__["KanatalComponent"],
-                    _travelplaces_kasol_kasol_component__WEBPACK_IMPORTED_MODULE_29__["KasolComponent"],
-                    _travelplaces_kutch_kutch_component__WEBPACK_IMPORTED_MODULE_30__["KutchComponent"],
-                    _travelplaces_lehladakh_lehladakh_component__WEBPACK_IMPORTED_MODULE_31__["LehladakhComponent"],
-                    _travelplaces_andaman_andaman_component__WEBPACK_IMPORTED_MODULE_32__["AndamanComponent"],
-                    _travelplaces_binsar_binsar_component__WEBPACK_IMPORTED_MODULE_33__["BinsarComponent"],
-                    _travelplaces_birbilling_birbilling_component__WEBPACK_IMPORTED_MODULE_34__["BirbillingComponent"],
-                    _tourismplaces_tajmahal_tajmahal_component__WEBPACK_IMPORTED_MODULE_35__["TajmahalComponent"],
-                    _tourismplaces_varanasi_varanasi_component__WEBPACK_IMPORTED_MODULE_36__["VaranasiComponent"],
-                    _tourismplaces_harmandir_harmandir_component__WEBPACK_IMPORTED_MODULE_37__["HarmandirComponent"],
-                    _tourismplaces_jaisalmer_jaisalmer_component__WEBPACK_IMPORTED_MODULE_38__["JaisalmerComponent"],
-                    _tourismplaces_redfort_redfort_component__WEBPACK_IMPORTED_MODULE_39__["RedfortComponent"],
-                    _tourismplaces_goi_goi_component__WEBPACK_IMPORTED_MODULE_40__["GoiComponent"],
-                    _tourismplaces_meccamasjid_meccamasjid_component__WEBPACK_IMPORTED_MODULE_41__["MeccamasjidComponent"],
-                    _tourismplaces_amerfort_amerfort_component__WEBPACK_IMPORTED_MODULE_42__["AmerfortComponent"],
-                    _tourismplaces_bog_bog_component__WEBPACK_IMPORTED_MODULE_43__["BogComponent"],
-                    _tourismplaces_periyar_periyar_component__WEBPACK_IMPORTED_MODULE_44__["PeriyarComponent"],
-                    _tourismplaces_agrafort_agrafort_component__WEBPACK_IMPORTED_MODULE_45__["AgrafortComponent"],
-                    _tourismplaces_elloracaves_elloracaves_component__WEBPACK_IMPORTED_MODULE_46__["ElloracavesComponent"],
-                    _booktour_booktour_component__WEBPACK_IMPORTED_MODULE_47__["BooktourComponent"],
-                    _hospitalityplaces_hyatt_hyatt_component__WEBPACK_IMPORTED_MODULE_48__["HyattComponent"],
-                    _hospitalityplaces_inter_inter_component__WEBPACK_IMPORTED_MODULE_49__["InterComponent"],
-                    _hospitalityplaces_marriott_marriott_component__WEBPACK_IMPORTED_MODULE_50__["MarriottComponent"],
-                    _hospitalityplaces_radisson_radisson_component__WEBPACK_IMPORTED_MODULE_51__["RadissonComponent"],
-                    _hospitalityplaces_shangri_shangri_component__WEBPACK_IMPORTED_MODULE_52__["ShangriComponent"],
-                    _hospitalityplaces_taj_taj_component__WEBPACK_IMPORTED_MODULE_53__["TajComponent"],
-                    _hospitalityplaces_lalit_lalit_component__WEBPACK_IMPORTED_MODULE_54__["LalitComponent"],
-                    _hospitalityplaces_leela_leela_component__WEBPACK_IMPORTED_MODULE_55__["LeelaComponent"],
-                    _bookhospitality_bookhospitality_component__WEBPACK_IMPORTED_MODULE_56__["BookhospitalityComponent"],
-                    _traveldashboard_traveldashboard_component__WEBPACK_IMPORTED_MODULE_57__["TraveldashboardComponent"],
-                    _tourdashboard_tourdashboard_component__WEBPACK_IMPORTED_MODULE_58__["TourdashboardComponent"],
-                    _hospitalitydashboard_hospitalitydashboard_component__WEBPACK_IMPORTED_MODULE_59__["HospitalitydashboardComponent"],
-                    _donationdashboard_donationdashboard_component__WEBPACK_IMPORTED_MODULE_60__["DonationdashboardComponent"],
-                    _termsandconditions_termsandconditions_component__WEBPACK_IMPORTED_MODULE_61__["TermsandconditionsComponent"],
-                    _hospitalityplaces_oberoi_oberoi_component__WEBPACK_IMPORTED_MODULE_62__["OberoiComponent"],
-                    _allinone_allinone_component__WEBPACK_IMPORTED_MODULE_63__["AllinoneComponent"],
-                    _profile_profile_component__WEBPACK_IMPORTED_MODULE_64__["ProfileComponent"],
-                    _editprofile_editprofile_component__WEBPACK_IMPORTED_MODULE_65__["EditprofileComponent"],
-                    _deleteaccount_deleteaccount_component__WEBPACK_IMPORTED_MODULE_66__["DeleteaccountComponent"],
+                    _hospitality_hospitality_component__WEBPACK_IMPORTED_MODULE_13__["HospitalityComponent"],
+                    _travel_travel_component__WEBPACK_IMPORTED_MODULE_14__["TravelComponent"],
+                    _tourism_tourism_component__WEBPACK_IMPORTED_MODULE_15__["TourismComponent"],
+                    _aboutus_aboutus_component__WEBPACK_IMPORTED_MODULE_16__["AboutusComponent"],
+                    _footer_footer_component__WEBPACK_IMPORTED_MODULE_18__["FooterComponent"],
+                    _donate_donate_component__WEBPACK_IMPORTED_MODULE_19__["DonateComponent"],
+                    _donationform_donationform_component__WEBPACK_IMPORTED_MODULE_20__["DonationformComponent"],
+                    _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_21__["ContactusComponent"],
+                    _booktravel_booktravel_component__WEBPACK_IMPORTED_MODULE_22__["BooktravelComponent"],
+                    _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_23__["DashboardComponent"],
+                    _travelplaces_goa_goa_component__WEBPACK_IMPORTED_MODULE_24__["GoaComponent"],
+                    _travelplaces_mcleodganj_mcleodganj_component__WEBPACK_IMPORTED_MODULE_25__["McleodganjComponent"],
+                    _travelplaces_srinagar_srinagar_component__WEBPACK_IMPORTED_MODULE_26__["SrinagarComponent"],
+                    _travelplaces_coorg_coorg_component__WEBPACK_IMPORTED_MODULE_27__["CoorgComponent"],
+                    _travelplaces_kerala_kerala_component__WEBPACK_IMPORTED_MODULE_28__["KeralaComponent"],
+                    _travelplaces_kanatal_kanatal_component__WEBPACK_IMPORTED_MODULE_29__["KanatalComponent"],
+                    _travelplaces_kasol_kasol_component__WEBPACK_IMPORTED_MODULE_30__["KasolComponent"],
+                    _travelplaces_kutch_kutch_component__WEBPACK_IMPORTED_MODULE_31__["KutchComponent"],
+                    _travelplaces_lehladakh_lehladakh_component__WEBPACK_IMPORTED_MODULE_32__["LehladakhComponent"],
+                    _travelplaces_andaman_andaman_component__WEBPACK_IMPORTED_MODULE_33__["AndamanComponent"],
+                    _travelplaces_binsar_binsar_component__WEBPACK_IMPORTED_MODULE_34__["BinsarComponent"],
+                    _travelplaces_birbilling_birbilling_component__WEBPACK_IMPORTED_MODULE_35__["BirbillingComponent"],
+                    _tourismplaces_tajmahal_tajmahal_component__WEBPACK_IMPORTED_MODULE_36__["TajmahalComponent"],
+                    _tourismplaces_varanasi_varanasi_component__WEBPACK_IMPORTED_MODULE_37__["VaranasiComponent"],
+                    _tourismplaces_harmandir_harmandir_component__WEBPACK_IMPORTED_MODULE_38__["HarmandirComponent"],
+                    _tourismplaces_jaisalmer_jaisalmer_component__WEBPACK_IMPORTED_MODULE_39__["JaisalmerComponent"],
+                    _tourismplaces_redfort_redfort_component__WEBPACK_IMPORTED_MODULE_40__["RedfortComponent"],
+                    _tourismplaces_goi_goi_component__WEBPACK_IMPORTED_MODULE_41__["GoiComponent"],
+                    _tourismplaces_meccamasjid_meccamasjid_component__WEBPACK_IMPORTED_MODULE_42__["MeccamasjidComponent"],
+                    _tourismplaces_amerfort_amerfort_component__WEBPACK_IMPORTED_MODULE_43__["AmerfortComponent"],
+                    _tourismplaces_bog_bog_component__WEBPACK_IMPORTED_MODULE_44__["BogComponent"],
+                    _tourismplaces_periyar_periyar_component__WEBPACK_IMPORTED_MODULE_45__["PeriyarComponent"],
+                    _tourismplaces_agrafort_agrafort_component__WEBPACK_IMPORTED_MODULE_46__["AgrafortComponent"],
+                    _tourismplaces_elloracaves_elloracaves_component__WEBPACK_IMPORTED_MODULE_47__["ElloracavesComponent"],
+                    _booktour_booktour_component__WEBPACK_IMPORTED_MODULE_48__["BooktourComponent"],
+                    _hospitalityplaces_hyatt_hyatt_component__WEBPACK_IMPORTED_MODULE_49__["HyattComponent"],
+                    _hospitalityplaces_inter_inter_component__WEBPACK_IMPORTED_MODULE_50__["InterComponent"],
+                    _hospitalityplaces_marriott_marriott_component__WEBPACK_IMPORTED_MODULE_51__["MarriottComponent"],
+                    _hospitalityplaces_radisson_radisson_component__WEBPACK_IMPORTED_MODULE_52__["RadissonComponent"],
+                    _hospitalityplaces_shangri_shangri_component__WEBPACK_IMPORTED_MODULE_53__["ShangriComponent"],
+                    _hospitalityplaces_taj_taj_component__WEBPACK_IMPORTED_MODULE_54__["TajComponent"],
+                    _hospitalityplaces_lalit_lalit_component__WEBPACK_IMPORTED_MODULE_55__["LalitComponent"],
+                    _hospitalityplaces_leela_leela_component__WEBPACK_IMPORTED_MODULE_56__["LeelaComponent"],
+                    _bookhospitality_bookhospitality_component__WEBPACK_IMPORTED_MODULE_57__["BookhospitalityComponent"],
+                    _traveldashboard_traveldashboard_component__WEBPACK_IMPORTED_MODULE_58__["TraveldashboardComponent"],
+                    _tourdashboard_tourdashboard_component__WEBPACK_IMPORTED_MODULE_59__["TourdashboardComponent"],
+                    _hospitalitydashboard_hospitalitydashboard_component__WEBPACK_IMPORTED_MODULE_60__["HospitalitydashboardComponent"],
+                    _donationdashboard_donationdashboard_component__WEBPACK_IMPORTED_MODULE_61__["DonationdashboardComponent"],
+                    _termsandconditions_termsandconditions_component__WEBPACK_IMPORTED_MODULE_62__["TermsandconditionsComponent"],
+                    _hospitalityplaces_oberoi_oberoi_component__WEBPACK_IMPORTED_MODULE_63__["OberoiComponent"],
+                    _allinone_allinone_component__WEBPACK_IMPORTED_MODULE_64__["AllinoneComponent"],
+                    _profile_profile_component__WEBPACK_IMPORTED_MODULE_65__["ProfileComponent"],
+                    _editprofile_editprofile_component__WEBPACK_IMPORTED_MODULE_66__["EditprofileComponent"],
+                    _deleteaccount_deleteaccount_component__WEBPACK_IMPORTED_MODULE_67__["DeleteaccountComponent"],
                 ],
                 imports: [
                     _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -7493,7 +7527,9 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
                     _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_11__["FormsModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_11__["ReactiveFormsModule"],
-                    _angular_flex_layout__WEBPACK_IMPORTED_MODULE_16__["FlexLayoutModule"]
+                    _angular_flex_layout__WEBPACK_IMPORTED_MODULE_17__["FlexLayoutModule"],
+                    ng_recaptcha__WEBPACK_IMPORTED_MODULE_12__["RecaptchaModule"],
+                    ng_recaptcha__WEBPACK_IMPORTED_MODULE_12__["RecaptchaFormsModule"]
                 ],
                 providers: [],
                 bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
@@ -11241,6 +11277,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/form-field */ "kmnG");
 /* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/input */ "qFsG");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var ng_recaptcha__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ng-recaptcha */ "jCJ1");
+
+
 
 
 
@@ -11279,9 +11318,11 @@ function LoginComponent_mat_error_44_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx_r1.getError());
 } }
 class LoginComponent {
-    constructor(_auth, dialog, _router, snackbar) {
+    constructor(_auth, dialog, _renderer, _http, _router, snackbar) {
         this._auth = _auth;
         this.dialog = dialog;
+        this._renderer = _renderer;
+        this._http = _http;
         this._router = _router;
         this.snackbar = snackbar;
         this.loginUserData = {
@@ -11311,6 +11352,21 @@ class LoginComponent {
         }
     }
     ngOnInit() {
+        let srcipt = this._renderer.createElement('script');
+        srcipt.defer = true;
+        srcipt.async = true;
+        srcipt.src = "https://www.google.com/recaptcha/api.js";
+        this._renderer.appendChild(document.body, srcipt);
+    }
+    resolved(token) {
+        console.log(token);
+        this.token = token;
+    }
+    verify() {
+        console.log(this.token);
+        this._http.post('http://localhost:3000/verify', { token: this.token }).subscribe(res => {
+            console.log("success or not ?", res);
+        });
     }
     loginUser() {
         this.loginData.email = this.loginUserData.email.value;
@@ -11337,8 +11393,8 @@ class LoginComponent {
         });
     }
 }
-LoginComponent.ɵfac = function LoginComponent_Factory(t) { return new (t || LoginComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"])); };
-LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: LoginComponent, selectors: [["app-login"]], decls: 52, vars: 9, consts: [["fxLayout", "row", "fxLayoutGap", "10px", "fxLayout.sm", "column", "fxLayout.xs", "column", 2, "background-image", "url(../assets/images/login.webp)", "background-repeat", "no-repeat", "background-size", "100% 105%"], [1, "jumbo"], [2, "font-weight", "bold", "font-size", "x-large"], [1, "material-icons", 2, "padding-top", "50px"], [2, "font-size", "large"], [1, "material-icons"], ["mat-raised-button", "", "routerLink", "/contactus", 1, "button"], ["fxLayoutAlign", "center center", 2, "padding", "40px"], ["fxLayout", "column", "fxLayoutAlign", "", 1, "login-card"], [1, "example-card"], ["color", "primary", 1, "title"], ["fxLayout", "column", "fxLayoutAlign", "center center"], ["fxLayout", "row", "fxLayoutAlign", "center center", "fxLayoutGap", "5px"], [1, "example"], ["matInput", "", "type", "email", "pattern", "[a-z0-9._%+-]+@[a-z]+\\.[a-z]{2,}$", "placeholder", "Email", "required", "", 3, "formControl"], [4, "ngIf"], ["matInput", "", "pattern", "(?=.*\\d)(?=.*[!()@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}", "placeholder", "Password", "required", "", 3, "type", "formControl"], ["mat-icon-button", "", "matSuffix", "", 3, "click"], [1, "agree", 3, "click"], ["fxLayout", "row", "fxLayoutAlign", "center", 2, "margin-bottom", "5px"], ["mat-raised-button", "", 1, "example-button", 3, "disabled", "click"], ["routerLink", "/register", 1, "text", 2, "cursor", "pointer", "outline", "none"]], template: function LoginComponent_Template(rf, ctx) { if (rf & 1) {
+LoginComponent.ɵfac = function LoginComponent_Factory(t) { return new (t || LoginComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["Renderer2"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"])); };
+LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: LoginComponent, selectors: [["app-login"]], decls: 54, vars: 9, consts: [["fxLayout", "row", "fxLayoutGap", "10px", "fxLayout.sm", "column", "fxLayout.xs", "column", 2, "background-image", "url(../assets/images/login.webp)", "background-repeat", "no-repeat", "background-size", "100% 105%"], [1, "jumbo"], [2, "font-weight", "bold", "font-size", "x-large"], [1, "material-icons", 2, "padding-top", "50px"], [2, "font-size", "large"], [1, "material-icons"], ["mat-raised-button", "", "routerLink", "/contactus", 1, "button"], ["fxLayoutAlign", "center center", 2, "padding", "40px"], ["fxLayout", "column", "fxLayoutAlign", "", 1, "login-card"], [1, "example-card"], ["color", "primary", 1, "title"], ["fxLayout", "column", "fxLayoutAlign", "center center"], ["fxLayout", "row", "fxLayoutAlign", "center center", "fxLayoutGap", "5px"], [1, "example"], ["matInput", "", "type", "email", "pattern", "[a-z0-9._%+-]+@[a-z]+\\.[a-z]{2,}$", "placeholder", "Email", "required", "", 3, "formControl"], [4, "ngIf"], ["matInput", "", "pattern", "(?=.*\\d)(?=.*[!()@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}", "placeholder", "Password", "required", "", 3, "type", "formControl"], ["mat-icon-button", "", "matSuffix", "", 3, "click"], [2, "margin-bottom", "5px"], ["siteKey", "6LfiBhQaAAAAAOkMOhj1vaTIWMzXfJZuHoIuYFUS", 3, "resolved"], [1, "agree", 3, "click"], ["fxLayout", "row", "fxLayoutAlign", "center", 2, "margin-bottom", "5px"], ["mat-raised-button", "", 1, "example-button", 3, "disabled", "click"], ["routerLink", "/register", 1, "text", 2, "cursor", "pointer", "outline", "none"]], template: function LoginComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "h1", 2);
@@ -11405,19 +11461,24 @@ LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineCom
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](44, LoginComponent_mat_error_44_Template, 2, 1, "mat-error", 15);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](45, "p", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function LoginComponent_Template_p_click_45_listener() { return ctx.openDialogTandC(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](46, "By Login, You accept our terms & conditions");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](45, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](46, "re-captcha", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("resolved", function LoginComponent_Template_re_captcha_resolved_46_listener($event) { return ctx.resolved($event); });
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](47, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](48, "button", 20);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function LoginComponent_Template_button_click_48_listener() { return ctx.loginUser(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](49, "Login");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](47, "p", 20);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function LoginComponent_Template_p_click_47_listener() { return ctx.openDialogTandC(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](48, "By Login, You accept our terms & conditions");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](50, "p", 21);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](51, "New to WhiN? Create an Account");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](49, "div", 21);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](50, "button", 22);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function LoginComponent_Template_button_click_50_listener() { return ctx.loginUser(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](51, "Login");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](52, "p", 23);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](53, "New to WhiN? Create an Account");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
@@ -11436,9 +11497,9 @@ LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineCom
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.hide ? "visibility_off" : "visibility");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx.loginUserData.password.invalid);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("disabled", ctx.loginUserData.password.invalid || ctx.loginUserData.email.invalid);
-    } }, directives: [_angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutGapDirective"], _angular_material_divider__WEBPACK_IMPORTED_MODULE_9__["MatDivider"], _angular_material_button__WEBPACK_IMPORTED_MODULE_10__["MatButton"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterLink"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutAlignDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_11__["MatCard"], _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_12__["MatToolbar"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_13__["MatIcon"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatFormField"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatLabel"], _angular_material_input__WEBPACK_IMPORTED_MODULE_15__["MatInput"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["PatternValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _angular_common__WEBPACK_IMPORTED_MODULE_16__["NgIf"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatSuffix"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatError"]], styles: [".example-card[_ngcontent-%COMP%] {\r\n  width: 350px;\r\n  padding: 0;\r\n  margin: 0;\r\n  box-shadow: 0px 0px 5px 5px rgba(245, 242, 242, 0.8);\r\n  border-radius: 20px;\r\n  overflow: hidden;\r\n  transition: all 0.3s ease-out;\r\n  }\r\n\r\n  .example-card[_ngcontent-%COMP%]:hover {\r\n    transform: translateY(-5px) scale(1.005) translateZ(0);\r\n    box-shadow: 0 24px 36px rgba(0,0,0,0.11), 0 24px 46px var(--box-shadow-color);\r\n  }\r\n\r\n  .example-card[_ngcontent-%COMP%]:hover   .overlay[_ngcontent-%COMP%] {\r\n    transform: scale(4) translateZ(0);\r\n  }\r\n\r\n  .example[_ngcontent-%COMP%]{\r\n  width: 250px;\r\n  margin-top: 10px;\r\n}\r\n\r\n  .title[_ngcontent-%COMP%]{\r\n  font-family: \"Cera Pro\", \"HelveticaNeue\", \"Helvetica Neue\", \"HelveticaNeueRoman\", \"HelveticaNeue-Roman\", \"Helvetica Neue Roman\", \"TeXGyreHerosRegular\", \"Helvetica\", \"Tahoma\", \"Geneva\", \"Arial\", sans-serif;\r\n  font-weight: 700;\r\n  font-size: 25px;\r\n  color: white;\r\n  background-color: rgb(118, 233, 137);\r\n  justify-content: center;\r\n  text-transform: uppercase;\r\n  border-radius: 20px 20px 0px 0px;\r\n}\r\n\r\n  .example-button[_ngcontent-%COMP%]{\r\n  margin: 10px;\r\n  font-weight: bold;\r\n  letter-spacing: 0.1em;\r\n  background-color: rgb(118, 233, 137);\r\n  justify-content: center;\r\n  width: auto;\r\n}\r\n\r\n  .example-form[_ngcontent-%COMP%] {\r\n  min-width: 250px;\r\n  max-width: 500px;\r\n  width: 100%;\r\n}\r\n\r\n  .example-full-width[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\n\r\n  .jumbo[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n  margin-bottom: 10px;\r\n  margin-right: 10px;\r\n  margin-left: 10px;\r\n  padding: 18px 30px;\r\n  color: #fcfcfc;;\r\n  min-height: 100px;\r\n}\r\n\r\n  .agree[_ngcontent-%COMP%] {\r\ntext-align: center;\r\nfont-weight: bold;\r\n}\r\n\r\n  .text[_ngcontent-%COMP%] {\r\n  text-align: center;\r\n  padding-bottom: 10px;\r\n  font-weight: bold;\r\n  }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxvZ2luLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxZQUFZO0VBQ1osVUFBVTtFQUNWLFNBQVM7RUFDVCxvREFBb0Q7RUFDcEQsbUJBQW1CO0VBQ25CLGdCQUFnQjtFQUNoQiw2QkFBNkI7RUFDN0I7O0VBRUE7SUFDRSxzREFBc0Q7SUFDdEQsNkVBQTZFO0VBQy9FOztFQUVBO0lBQ0UsaUNBQWlDO0VBQ25DOztFQUVGO0VBQ0UsWUFBWTtFQUNaLGdCQUFnQjtBQUNsQjs7RUFFQTtFQUNFLDRNQUE0TTtFQUM1TSxnQkFBZ0I7RUFDaEIsZUFBZTtFQUNmLFlBQVk7RUFDWixvQ0FBb0M7RUFDcEMsdUJBQXVCO0VBQ3ZCLHlCQUF5QjtFQUN6QixnQ0FBZ0M7QUFDbEM7O0VBRUE7RUFDRSxZQUFZO0VBQ1osaUJBQWlCO0VBQ2pCLHFCQUFxQjtFQUNyQixvQ0FBb0M7RUFDcEMsdUJBQXVCO0VBQ3ZCLFdBQVc7QUFDYjs7RUFFQTtFQUNFLGdCQUFnQjtFQUNoQixnQkFBZ0I7RUFDaEIsV0FBVztBQUNiOztFQUVBO0VBQ0UsV0FBVztBQUNiOztFQUVBO0VBQ0UsZ0JBQWdCO0VBQ2hCLG1CQUFtQjtFQUNuQixrQkFBa0I7RUFDbEIsaUJBQWlCO0VBQ2pCLGtCQUFrQjtFQUNsQixjQUFjO0VBQ2QsaUJBQWlCO0FBQ25COztFQUVBO0FBQ0Esa0JBQWtCO0FBQ2xCLGlCQUFpQjtBQUNqQjs7RUFFQTtFQUNFLGtCQUFrQjtFQUNsQixvQkFBb0I7RUFDcEIsaUJBQWlCO0VBQ2pCIiwiZmlsZSI6ImxvZ2luLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZXhhbXBsZS1jYXJkIHtcclxuICB3aWR0aDogMzUwcHg7XHJcbiAgcGFkZGluZzogMDtcclxuICBtYXJnaW46IDA7XHJcbiAgYm94LXNoYWRvdzogMHB4IDBweCA1cHggNXB4IHJnYmEoMjQ1LCAyNDIsIDI0MiwgMC44KTtcclxuICBib3JkZXItcmFkaXVzOiAyMHB4O1xyXG4gIG92ZXJmbG93OiBoaWRkZW47XHJcbiAgdHJhbnNpdGlvbjogYWxsIDAuM3MgZWFzZS1vdXQ7XHJcbiAgfVxyXG5cclxuICAuZXhhbXBsZS1jYXJkOmhvdmVyIHtcclxuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgtNXB4KSBzY2FsZSgxLjAwNSkgdHJhbnNsYXRlWigwKTtcclxuICAgIGJveC1zaGFkb3c6IDAgMjRweCAzNnB4IHJnYmEoMCwwLDAsMC4xMSksIDAgMjRweCA0NnB4IHZhcigtLWJveC1zaGFkb3ctY29sb3IpO1xyXG4gIH1cclxuICBcclxuICAuZXhhbXBsZS1jYXJkOmhvdmVyIC5vdmVybGF5IHtcclxuICAgIHRyYW5zZm9ybTogc2NhbGUoNCkgdHJhbnNsYXRlWigwKTtcclxuICB9XHJcblxyXG4uZXhhbXBsZXtcclxuICB3aWR0aDogMjUwcHg7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG5cclxuLnRpdGxle1xyXG4gIGZvbnQtZmFtaWx5OiBcIkNlcmEgUHJvXCIsIFwiSGVsdmV0aWNhTmV1ZVwiLCBcIkhlbHZldGljYSBOZXVlXCIsIFwiSGVsdmV0aWNhTmV1ZVJvbWFuXCIsIFwiSGVsdmV0aWNhTmV1ZS1Sb21hblwiLCBcIkhlbHZldGljYSBOZXVlIFJvbWFuXCIsIFwiVGVYR3lyZUhlcm9zUmVndWxhclwiLCBcIkhlbHZldGljYVwiLCBcIlRhaG9tYVwiLCBcIkdlbmV2YVwiLCBcIkFyaWFsXCIsIHNhbnMtc2VyaWY7XHJcbiAgZm9udC13ZWlnaHQ6IDcwMDtcclxuICBmb250LXNpemU6IDI1cHg7XHJcbiAgY29sb3I6IHdoaXRlO1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHJnYigxMTgsIDIzMywgMTM3KTtcclxuICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcclxuICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlO1xyXG4gIGJvcmRlci1yYWRpdXM6IDIwcHggMjBweCAwcHggMHB4O1xyXG59XHJcblxyXG4uZXhhbXBsZS1idXR0b257XHJcbiAgbWFyZ2luOiAxMHB4O1xyXG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xyXG4gIGxldHRlci1zcGFjaW5nOiAwLjFlbTtcclxuICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMTE4LCAyMzMsIDEzNyk7XHJcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XHJcbiAgd2lkdGg6IGF1dG87XHJcbn1cclxuXHJcbi5leGFtcGxlLWZvcm0ge1xyXG4gIG1pbi13aWR0aDogMjUwcHg7XHJcbiAgbWF4LXdpZHRoOiA1MDBweDtcclxuICB3aWR0aDogMTAwJTtcclxufVxyXG5cclxuLmV4YW1wbGUtZnVsbC13aWR0aCB7XHJcbiAgd2lkdGg6IDEwMCU7XHJcbn1cclxuXHJcbi5qdW1ibyB7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxuICBtYXJnaW4tYm90dG9tOiAxMHB4O1xyXG4gIG1hcmdpbi1yaWdodDogMTBweDtcclxuICBtYXJnaW4tbGVmdDogMTBweDtcclxuICBwYWRkaW5nOiAxOHB4IDMwcHg7XHJcbiAgY29sb3I6ICNmY2ZjZmM7O1xyXG4gIG1pbi1oZWlnaHQ6IDEwMHB4O1xyXG59XHJcblxyXG4uYWdyZWUge1xyXG50ZXh0LWFsaWduOiBjZW50ZXI7XHJcbmZvbnQtd2VpZ2h0OiBib2xkO1xyXG59XHJcblxyXG4udGV4dCB7XHJcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gIHBhZGRpbmctYm90dG9tOiAxMHB4O1xyXG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xyXG4gIH0iXX0= */"] });
+    } }, directives: [_angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutDirective"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutGapDirective"], _angular_material_divider__WEBPACK_IMPORTED_MODULE_9__["MatDivider"], _angular_material_button__WEBPACK_IMPORTED_MODULE_10__["MatButton"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterLink"], _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_8__["DefaultLayoutAlignDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_11__["MatCard"], _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_12__["MatToolbar"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_13__["MatIcon"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatFormField"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatLabel"], _angular_material_input__WEBPACK_IMPORTED_MODULE_15__["MatInput"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["PatternValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _angular_common__WEBPACK_IMPORTED_MODULE_16__["NgIf"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatSuffix"], ng_recaptcha__WEBPACK_IMPORTED_MODULE_17__["RecaptchaComponent"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__["MatError"]], styles: [".example-card[_ngcontent-%COMP%] {\r\n  width: 350px;\r\n  padding: 0;\r\n  margin: 0;\r\n  border-radius: 20px;\r\n}\r\n\r\n.example[_ngcontent-%COMP%]{\r\n  width: 250px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.title[_ngcontent-%COMP%]{\r\n  font-family: \"Cera Pro\", \"HelveticaNeue\", \"Helvetica Neue\", \"HelveticaNeueRoman\", \"HelveticaNeue-Roman\", \"Helvetica Neue Roman\", \"TeXGyreHerosRegular\", \"Helvetica\", \"Tahoma\", \"Geneva\", \"Arial\", sans-serif;\r\n  font-weight: 700;\r\n  font-size: 25px;\r\n  color: white;\r\n  background-color: rgb(118, 233, 137);\r\n  justify-content: center;\r\n  text-transform: uppercase;\r\n  border-radius: 20px 20px 0px 0px;\r\n}\r\n\r\n.example-button[_ngcontent-%COMP%]{\r\n  margin: 10px;\r\n  font-weight: bold;\r\n  letter-spacing: 0.1em;\r\n  background-color: rgb(118, 233, 137);\r\n  justify-content: center;\r\n  width: auto;\r\n}\r\n\r\n.example-form[_ngcontent-%COMP%] {\r\n  min-width: 250px;\r\n  max-width: 500px;\r\n  width: 100%;\r\n}\r\n\r\n.example-full-width[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\n\r\n.jumbo[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n  margin-bottom: 10px;\r\n  margin-right: 10px;\r\n  margin-left: 10px;\r\n  padding: 18px 30px;\r\n  color: #fcfcfc;;\r\n  min-height: 100px;\r\n}\r\n\r\n.agree[_ngcontent-%COMP%] {\r\ntext-align: center;\r\nfont-weight: bold;\r\n}\r\n\r\n.text[_ngcontent-%COMP%] {\r\n  text-align: center;\r\n  padding-bottom: 10px;\r\n  font-weight: bold;\r\n  }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxvZ2luLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxZQUFZO0VBQ1osVUFBVTtFQUNWLFNBQVM7RUFDVCxtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxZQUFZO0VBQ1osZ0JBQWdCO0FBQ2xCOztBQUVBO0VBQ0UsNE1BQTRNO0VBQzVNLGdCQUFnQjtFQUNoQixlQUFlO0VBQ2YsWUFBWTtFQUNaLG9DQUFvQztFQUNwQyx1QkFBdUI7RUFDdkIseUJBQXlCO0VBQ3pCLGdDQUFnQztBQUNsQzs7QUFFQTtFQUNFLFlBQVk7RUFDWixpQkFBaUI7RUFDakIscUJBQXFCO0VBQ3JCLG9DQUFvQztFQUNwQyx1QkFBdUI7RUFDdkIsV0FBVztBQUNiOztBQUVBO0VBQ0UsZ0JBQWdCO0VBQ2hCLGdCQUFnQjtFQUNoQixXQUFXO0FBQ2I7O0FBRUE7RUFDRSxXQUFXO0FBQ2I7O0FBRUE7RUFDRSxnQkFBZ0I7RUFDaEIsbUJBQW1CO0VBQ25CLGtCQUFrQjtFQUNsQixpQkFBaUI7RUFDakIsa0JBQWtCO0VBQ2xCLGNBQWM7RUFDZCxpQkFBaUI7QUFDbkI7O0FBRUE7QUFDQSxrQkFBa0I7QUFDbEIsaUJBQWlCO0FBQ2pCOztBQUVBO0VBQ0Usa0JBQWtCO0VBQ2xCLG9CQUFvQjtFQUNwQixpQkFBaUI7RUFDakIiLCJmaWxlIjoibG9naW4uY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5leGFtcGxlLWNhcmQge1xyXG4gIHdpZHRoOiAzNTBweDtcclxuICBwYWRkaW5nOiAwO1xyXG4gIG1hcmdpbjogMDtcclxuICBib3JkZXItcmFkaXVzOiAyMHB4O1xyXG59XHJcblxyXG4uZXhhbXBsZXtcclxuICB3aWR0aDogMjUwcHg7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG5cclxuLnRpdGxle1xyXG4gIGZvbnQtZmFtaWx5OiBcIkNlcmEgUHJvXCIsIFwiSGVsdmV0aWNhTmV1ZVwiLCBcIkhlbHZldGljYSBOZXVlXCIsIFwiSGVsdmV0aWNhTmV1ZVJvbWFuXCIsIFwiSGVsdmV0aWNhTmV1ZS1Sb21hblwiLCBcIkhlbHZldGljYSBOZXVlIFJvbWFuXCIsIFwiVGVYR3lyZUhlcm9zUmVndWxhclwiLCBcIkhlbHZldGljYVwiLCBcIlRhaG9tYVwiLCBcIkdlbmV2YVwiLCBcIkFyaWFsXCIsIHNhbnMtc2VyaWY7XHJcbiAgZm9udC13ZWlnaHQ6IDcwMDtcclxuICBmb250LXNpemU6IDI1cHg7XHJcbiAgY29sb3I6IHdoaXRlO1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHJnYigxMTgsIDIzMywgMTM3KTtcclxuICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcclxuICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlO1xyXG4gIGJvcmRlci1yYWRpdXM6IDIwcHggMjBweCAwcHggMHB4O1xyXG59XHJcblxyXG4uZXhhbXBsZS1idXR0b257XHJcbiAgbWFyZ2luOiAxMHB4O1xyXG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xyXG4gIGxldHRlci1zcGFjaW5nOiAwLjFlbTtcclxuICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMTE4LCAyMzMsIDEzNyk7XHJcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XHJcbiAgd2lkdGg6IGF1dG87XHJcbn1cclxuXHJcbi5leGFtcGxlLWZvcm0ge1xyXG4gIG1pbi13aWR0aDogMjUwcHg7XHJcbiAgbWF4LXdpZHRoOiA1MDBweDtcclxuICB3aWR0aDogMTAwJTtcclxufVxyXG5cclxuLmV4YW1wbGUtZnVsbC13aWR0aCB7XHJcbiAgd2lkdGg6IDEwMCU7XHJcbn1cclxuXHJcbi5qdW1ibyB7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxuICBtYXJnaW4tYm90dG9tOiAxMHB4O1xyXG4gIG1hcmdpbi1yaWdodDogMTBweDtcclxuICBtYXJnaW4tbGVmdDogMTBweDtcclxuICBwYWRkaW5nOiAxOHB4IDMwcHg7XHJcbiAgY29sb3I6ICNmY2ZjZmM7O1xyXG4gIG1pbi1oZWlnaHQ6IDEwMHB4O1xyXG59XHJcblxyXG4uYWdyZWUge1xyXG50ZXh0LWFsaWduOiBjZW50ZXI7XHJcbmZvbnQtd2VpZ2h0OiBib2xkO1xyXG59XHJcblxyXG4udGV4dCB7XHJcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gIHBhZGRpbmctYm90dG9tOiAxMHB4O1xyXG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xyXG4gIH0iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](LoginComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"],
         args: [{
@@ -11446,7 +11507,7 @@ LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineCom
                 templateUrl: './login.component.html',
                 styleUrls: ['./login.component.css']
             }]
-    }], function () { return [{ type: _auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"] }, { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"] }, { type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"] }]; }, null); })();
+    }], function () { return [{ type: _auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"] }, { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Renderer2"] }, { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClient"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"] }, { type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"] }]; }, null); })();
 
 
 /***/ }),

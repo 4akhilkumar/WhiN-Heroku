@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutGap="10px" fxLayout.sm="column" fxLayout.xs="column" style="background-image: url(../assets/images/login.webp); background-repeat: no-repeat; background-size: 100% 105%;">
   <div class="jumbo">
     <h1 style="font-weight: bold;font-size: x-large;">
-      <span class="material-icons" style="padding-top: 50px;">login</span>
+      <span class="material-icons" style="padding-top: 50px;">login</span> 
       Hey there! Just Login with your Strong Credentials that what you had created back there.<br> And surf with WhiN Service and Features...
     </h1>
     <mat-divider></mat-divider>
@@ -38,6 +38,9 @@
                     </button>
                     <mat-error *ngIf="loginUserData.password.invalid">{{getError()}}</mat-error>
                   </mat-form-field>
+                </div>
+                <div style="margin-bottom: 5px;">
+                  <re-captcha (resolved)="resolved($event)" siteKey="6LfiBhQaAAAAAOkMOhj1vaTIWMzXfJZuHoIuYFUS"></re-captcha>
                 </div>
                 <p class="agree" (click)="openDialogTandC()">By Login, You accept our terms & conditions</p>
               </div>

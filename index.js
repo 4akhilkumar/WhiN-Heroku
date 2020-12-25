@@ -50,6 +50,26 @@ app.use('/donate',donateRoute);
 app.use('/contactus',contactusRoute);
 app.use('/user',userRoute);
 
+app.post('/verify', (req,res) => {
+  var secretKey = '6LfiBhQaAAAAALj72o9LBq7ruMMJe_WgCDIYK8WZ';
+  var userKey = req.body.token;
+  axios.post('https://www.google.com/recaptcha/api/siteverify?secret='+secretKey+'&response='+userKey).then(response => {
+      console.log("got response ", response.data)
+      if(response.data.success) {
+          return res.status(200).json({
+              response: "Verification Successful"
+          });
+      }
+      return res.status(401).json({
+          error: "Verification Failed"
+      });
+      }).catch(error => {
+          res.status(500).json({
+            error: "Server Not Responding"  
+          })
+  });
+});
+
 app.get("*", (req, res) => { 
     res.sendFile(path.resolve(process.cwd() + "/whin/dist/whin/index.html"));
 });
