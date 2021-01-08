@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatCarouselModule } from '@ngmodule/material-carousel';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
@@ -19,7 +18,7 @@ import {MatTableModule} from '@angular/material/table';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatDialogModule} from '@angular/material/dialog';
 
-const Materialcomponents=[MatDialogModule,MatCarouselModule,MatSliderModule,MatTableModule,MatGridListModule,MatListModule,MatPaginatorModule,MatSnackBarModule,MatStepperModule,MatCheckboxModule,MatToolbarModule, MatCardModule,MatButtonModule,MatInputModule,MatFormFieldModule,MatIconModule,MatSelectModule,MatTabsModule,MatSidenavModule];
+const Materialcomponents=[MatDialogModule,MatSliderModule,MatTableModule,MatGridListModule,MatListModule,MatPaginatorModule,MatSnackBarModule,MatStepperModule,MatCheckboxModule,MatToolbarModule, MatCardModule,MatButtonModule,MatInputModule,MatFormFieldModule,MatIconModule,MatSelectModule,MatTabsModule,MatSidenavModule];
 @NgModule({
   
   imports: [
