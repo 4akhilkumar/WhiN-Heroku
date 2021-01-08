@@ -88,7 +88,7 @@ UserRoute.route('/login').post((req, res) => {
               res.status(200).send({token})
               // The Code Lines to send E - Mail
               let mailOptions = {
-                from: 'nareddy1119@gmail.com',
+                from: '4projtest@gmail.com',
                 to: req.body.email,
                 subject: 'Login Activity Found!',
                 html: '<html><body><div class="w3-container"><h2>We noticed a login activity from your account. </h2><p>The account had login using the following Details:</p></div></body></html>' + "Email Address: "+ req.body.email +"<br />Date: "+date + "-" + month + "-" + year + "<br />Time: " + hours + " Hrs:" + minutes + " Min:" + seconds + " Sec",
