@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { KutchComponent } from './kutch.component';
 
@@ -6,7 +6,7 @@ describe('KutchComponent', () => {
   let component: KutchComponent;
   let fixture: ComponentFixture<KutchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ KutchComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CoorgComponent } from './coorg.component';
 
@@ -6,7 +6,7 @@ describe('CoorgComponent', () => {
   let component: CoorgComponent;
   let fixture: ComponentFixture<CoorgComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CoorgComponent ]
     })
