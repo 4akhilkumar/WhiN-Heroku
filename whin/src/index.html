@@ -122,22 +122,15 @@
 </script>
 <script>
   window.watsonAssistantChatOptions = {
-      integrationID: "4767c762-11f1-4214-bc94-cb9f665ddfe6",
-      region: "eu-gb",
-      serviceInstanceID: "59a18c31-3a0b-461f-a797-1d6ed041a8ee",
-
-    showLauncher: false,
-    onLoad: function(instance) {
-      const button = document.querySelector('.chatLauncher');
-      button.addEventListener('click', function clickListener() {
-        instance.openWindow();
-      });
-      instance.render().then(function() {
-        button.style.display = 'block';
-        button.classList.add('open');
-      });
-    }
-  };
-  setTimeout(function(){const t=document.createElement('script');t.src='https://web-chat.global.assistant.watson.appdomain.cloud/loadWatsonAssistantChat.js';document.head.appendChild(t);});
+      integrationID: "4767c762-11f1-4214-bc94-cb9f665ddfe6", // The ID of this integration.
+      region: "eu-gb", // The region your integration is hosted in.
+      serviceInstanceID: "59a18c31-3a0b-461f-a797-1d6ed041a8ee", // The ID of your service instance.
+      onLoad: function(instance) { instance.render(); }
+    };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/loadWatsonAssistantChat.js";
+    document.head.appendChild(t);
+  });
 </script>
 </html>
